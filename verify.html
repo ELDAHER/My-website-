@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAHERINK | Verify Authenticity</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* الهوية البصرية: Acid Wash Theme (Charcoal, Dusty Purple, Stone Blue) */
+        :root {
+            --charcoal: #2A2A2E;
+            --dusty-purple: #5A4A6A;
+            --stone-blue: #6A8A9A;
+            --text-light: #F0F0F0;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #E0E0E0;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(-45deg, var(--charcoal), var(--dusty-purple), var(--charcoal), var(--stone-blue));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* حاوية الزجاج المغشى (Glassmorphism) */
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 40px; width: 90%; max-width: 400px;
+            text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative; z-index: 10;
+        }
+
+        h1 { font-size: 24px; font-weight: 700; letter-spacing: 4px; margin-bottom: 5px; }
+        p.subtitle { font-size: 10px; color: #BBB; letter-spacing: 2px; margin-bottom: 30px; }
+
+        /* حقول الإدخال */
+        input {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border);
+            color: white; border-radius: 4px; box-sizing: border-box;
+            font-family: inherit; font-size: 12px; outline: none;
+        }
+        input:focus { border-color: var(--stone-blue); }
+
+        /* الأزرار */
+        button {
+            width: 100%; padding: 14px; background: var(--text-light); color: var(--charcoal);
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
+            font-size: 12px; margin-bottom: 10px;
+        }
+        button:hover { background: var(--stone-blue); color: white; }
+        button.secondary { background: transparent; color: var(--text-light); border: 1px solid var(--glass-border); }
+        button.secondary:hover { background: rgba(255,255,255,0.1); }
+
+        /* مبدل اللغة */
+        .lang-toggle {
+            position: absolute; top: 20px; right: 20px; z-index: 20;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 10px;
+        }
+
+        /* رسائل الخطأ والسياسة المنبثقة (Bottom Sheet) */
+        .bottom-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: rgba(20, 20, 25, 0.95); backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border); padding: 30px 20px;
+            box-sizing: border-box; text-align: center; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50; border-top-left-radius: 20px; border-top-right-radius: 20px;
+        }
+        .bottom-sheet.active { bottom: 0; }
+        .sheet-title { font-size: 14px; font-weight: bold; margin-bottom: 15px; color: #FF4D4D; }
+        .sheet-text { font-size: 10px; line-height: 1.6; text-transform: none; color: #CCC; margin-bottom: 20px; }
+        
+        /* حالات الشاشة (Screens) */
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
+        /* اللودر */
+        .loader { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid white; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <button class="lang-toggle" onclick="toggleLanguage()">EN / DE</button>
+
+    <div class="glass-container">
+        
+        <div id="screen-splash" class="screen active">
+            <div class="loader" id="loader-icon"></div>
+            <h1>DAHERINK</h1>
+            <p class="subtitle" id="t-splash-sub">Authenticating...</p>
+            <div id="splash-action" style="display: none; margin-top: 30px;">
+                <p style="font-size: 12px; color: #4CAF50; font-weight: bold; margin-bottom: 20px;" id="t-authentic">AUTHENTIC GARMENT VERIFIED</p>
+                <p style="font-size: 10px; text-transform: none; margin-bottom: 20px;" id="t-redirecting">Redirecting in <span id="countdown">3</span> seconds...</p>
+                <button class="secondary" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE ITEM</button>
+            </div>
+        </div>
+
+        <div id="screen-manage" class="screen">
+            <h1>DAHERINK</h1>
+            <p class="subtitle" id="t-manage-sub">Garment Configuration</p>
+            
+            <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
+            <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
+            <input type="text" id="input-url" placeholder="ENTER YOUR LINK (E.G. INSTAGRAM.COM/...)" required>
+            
+            <button onclick="saveConfiguration()" id="t-save-btn">SAVE CONFIGURATION</button>
+            <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
+        </div>
+
+    </div>
+
+    <div class="bottom-sheet" id="whitelist-sheet">
+        <div class="sheet-title" id="t-error-title">UNSUPPORTED LINK</div>
+        <div class="sheet-text" id="t-error-text">
+            To maintain our brand's security and quality standards, this garment can only be linked to trusted platforms. Supported domains include: Instagram, TikTok, X, Facebook, LinkedIn, Snapchat, WhatsApp, Telegram, Tinder, Bumble, Hinge, Spotify, Apple Music, YouTube, Twitch, and Pinterest.
+        </div>
+        <button onclick="closeSheet()">UNDERSTOOD</button>
+    </div>
+
+    <script>
+        /* =========================================
+           1. SUPABASE CONFIGURATION (قم بتعديل هذه)
+           ========================================= */
+        const SUPABASE_URL = 'ضع_رابط_قاعدة_البيانات_هنا';
+        const SUPABASE_ANON_KEY = 'ضع_مفتاح_API_هنا';
+        const TABLE_NAME = 'products'; // غيّر هذا إذا كان اسم الجدول مختلفاً
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        /* =========================================
+           2. STATE & WHITELIST
+           ========================================= */
+        let currentItem = null;
+        let countdownTimer;
+        const allowedDomains = [
+            'instagram.com', 'tiktok.com', 'twitter.com', 'x.com', 'facebook.com', 
+            'linkedin.com', 'snapchat.com', 'wa.me', 'whatsapp.com', 't.me', 'telegram.me', 
+            'tinder.com', 'bumble.com', 'hinge.co', 'spotify.com', 'apple.com', 
+            'youtube.com', 'twitch.tv', 'pinterest.com', 'daherink.com'
+        ];
+
+        /* =========================================
+           3. DICTIONARY (Bilingual EN/DE)
+           ========================================= */
+        let currentLang = navigator.language.startsWith('de') ? 'de' : 'en';
+        const dict = {
+            'en': {
+                'splash-sub': 'Authenticating...',
+                'authentic': 'AUTHENTIC GARMENT VERIFIED',
+                'redirecting': 'Redirecting in {s} seconds...',
+                'manage-btn': 'OWNER? MANAGE ITEM',
+                'manage-sub': 'Garment Configuration',
+                'placeholder-pin': 'ENTER CARE-LABEL PIN',
+                'placeholder-email': 'ENTER EMAIL (FOR RECOVERY)',
+                'placeholder-url': 'ENTER YOUR LINK',
+                'save-btn': 'SAVE CONFIGURATION',
+                'shop-btn': 'VISIT DAHERINK SHOP',
+                'error-title': 'UNSUPPORTED LINK',
+                'error-text': 'To maintain security, this garment can only be linked to trusted platforms (Social Media, Messaging, Dating Apps, Music, DAHERINK).',
+                'invalid-pin': 'INVALID PIN. PLEASE TRY AGAIN.',
+                'not-found': 'CODE NOT FOUND OR INVALID.'
+            },
+            'de': {
+                'splash-sub': 'Authentifizierung...',
+                'authentic': 'ECHTES KLEIDUNGSSTÜCK BESTÄTIGT',
+                'redirecting': 'Weiterleitung in {s} Sekunden...',
+                'manage-btn': 'BESITZER? ARTIKEL VERWALTEN',
+                'manage-sub': 'Kleidungsstück-Konfiguration',
+                'placeholder-pin': 'PFLEGEETIKETT-PIN EINGEBEN',
+                'placeholder-email': 'E-MAIL EINGEBEN (ZUR WIEDERHERSTELLUNG)',
+                'placeholder-url': 'DEINEN LINK EINGEBEN',
+                'save-btn': 'KONFIGURATION SPEICHERN',
+                'shop-btn': 'DAHERINK SHOP BESUCHEN',
+                'error-title': 'NICHT UNTERSTÜTZTER LINK',
+                'error-text': 'Aus Sicherheitsgründen kann dieses Kleidungsstück nur mit vertrauenswürdigen Plattformen verknüpft werden (Social Media, Messenger, Dating-Apps, Musik, DAHERINK).',
+                'invalid-pin': 'FALSCHE PIN. BITTE ERNEUT VERSUCHEN.',
+                'not-found': 'CODE NICHT GEFUNDEN.'
+            }
+        };
+
+        function updateUI() {
+            document.getElementById('t-splash-sub').innerText = dict[currentLang]['splash-sub'];
+            document.getElementById('t-authentic').innerText = dict[currentLang]['authentic'];
+            document.getElementById('t-manage-btn').innerText = dict[currentLang]['manage-btn'];
+            document.getElementById('t-manage-sub').innerText = dict[currentLang]['manage-sub'];
+            document.getElementById('input-pin').placeholder = dict[currentLang]['placeholder-pin'];
+            document.getElementById('input-email').placeholder = dict[currentLang]['placeholder-email'];
+            document.getElementById('input-url').placeholder = dict[currentLang]['placeholder-url'];
+            document.getElementById('t-save-btn').innerText = dict[currentLang]['save-btn'];
+            document.getElementById('t-shop-btn').innerText = dict[currentLang]['shop-btn'];
+            document.getElementById('t-error-title').innerText = dict[currentLang]['error-title'];
+            document.getElementById('t-error-text').innerText = dict[currentLang]['error-text'];
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'de' : 'en';
+            updateUI();
+        }
+
+        /* =========================================
+           4. CORE LOGIC
+           ========================================= */
+        window.onload = async () => {
+            updateUI();
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id'); // يستخرج الرقم من ?id=1
+
+            if (!id) {
+                alert(dict[currentLang]['not-found']);
+                window.location.href = 'https://daherink.com';
+                return;
+            }
+
+            // جلب بيانات القطعة من Supabase بناءً على الـ id
+            const { data, error } = await db.from(TABLE_NAME).select('*').eq('id', id).single();
+
+            if (error || !data) {
+                alert(dict[currentLang]['not-found']);
+                return;
+            }
+
+            currentItem = data;
+            document.getElementById('loader-icon').style.display = 'none';
+            document.getElementById('splash-action').style.display = 'block';
+
+            // إذا كانت القطعة غير مفعلة (الرابط فارغ)
+            if (!currentItem.target_url || currentItem.status === 'unassigned') {
+                openEditMode(); 
+            } else {
+                // القطعة مفعلة: ابدأ العداد للانتقال
+                startCountdown(3, currentItem.target_url);
+            }
+        };
+
+        function startCountdown(seconds, url) {
+            const redirectText = document.getElementById('t-redirecting');
+            let timeLeft = seconds;
+            
+            countdownTimer = setInterval(() => {
+                redirectText.innerHTML = dict[currentLang]['redirecting'].replace('{s}', timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = url; // التوجيه التلقائي
+                }
+                timeLeft -= 1;
+            }, 1000);
+        }
+
+        function openEditMode() {
+            clearInterval(countdownTimer); // إيقاف الانتقال إذا ضغط المالك على إدارة
+            document.getElementById('screen-splash').classList.remove('active');
+            document.getElementById('screen-manage').classList.add('active');
+            
+            // إذا كانت أول مرة يطالب بالإيميل، إذا تم إدخاله مسبقاً نخفيه
+            if (!currentItem.owner_email) {
+                document.getElementById('input-email').style.display = 'block';
+            }
+            if (currentItem.target_url) {
+                document.getElementById('input-url').value = currentItem.target_url;
+            }
+        }
+
+        /* تصحيح الرابط تلقائياً وفحص اللائحة البيضاء */
+        function validateURL(inputStr) {
+            let cleanStr = inputStr.trim();
+            if (!/^https?:\/\//i.test(cleanStr)) { cleanStr = 'https://' + cleanStr; }
+            
+            try {
+                const url = new URL(cleanStr);
+                const host = url.hostname.replace('www.', '');
+                const isAllowed = allowedDomains.some(domain => host.includes(domain));
+                return isAllowed ? cleanStr : false;
+            } catch (e) { return false; }
+        }
+
+        async function saveConfiguration() {
+            const pinInput = document.getElementById('input-pin').value;
+            const emailInput = document.getElementById('input-email').value;
+            const urlInput = document.getElementById('input-url').value;
+
+            // التحقق من الـ PIN
+            if (pinInput !== currentItem.pin.toString()) {
+                alert(dict[currentLang]['invalid-pin']);
+                return;
+            }
+
+            // التحقق من الرابط وتصحيحه
+            const validUrl = validateURL(urlInput);
+            if (!validUrl) {
+                document.getElementById('whitelist-sheet').classList.add('active');
+                return;
+            }
+
+            // تحديث قاعدة البيانات
+            const updates = { target_url: validUrl, status: 'assigned' };
+            if (!currentItem.owner_email && emailInput) {
+                updates.owner_email = emailInput;
+            }
+
+            const { error } = await db.from(TABLE_NAME).update(updates).eq('id', currentItem.id);
+
+            if (error) {
+                alert('Database Error. Try again.');
+            } else {
+                // نجاح الحفظ، انتقال فوري
+                window.location.href = validUrl;
+            }
+        }
+
+        function closeSheet() {
+            document.getElementById('whitelist-sheet').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
