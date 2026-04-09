@@ -1,67 +1,129 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحقق من أصالة المنتج | Premium Heavyweight Apparel</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>DAHERINK | Official page</title>
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-        h1 { font-size: 1.5rem; margin-bottom: 1rem; color: #333; }
-        input { width: 100%; padding: 10px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #000; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #333; }
-        #result { margin-top: 1rem; font-weight: bold; }
-        .success { color: green; }
-        .error { color: red; }
+        /* Base Reset */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body { 
+            /* Background Configuration */
+            background-image: url('Picsart_26-04-06_16-41-04-669.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+            /* Typography and Colors */
+            color: #ffffff; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Container */
+        .wrapper {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.65); 
+            padding: 45px 25px;
+            border-radius: 4px; /* Sharp edges for premium streetwear aesthetic */
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        /* Brand Identity */
+        .brand-logo {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 0.7rem;
+            color: #999;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Action Buttons */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            text-decoration: none;
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-outline:hover {
+            background-color: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* Legal Footer */
+        footer {
+            margin-top: 50px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>نظام التحقق من القطع الأصلية</h1>
-    <p>أدخل الرقم التسلسلي للقطعة (210-360 GSM)</p>
-    <input type="text" id="serialInput" placeholder="أدخل الرقم هنا...">
-    <button onclick="verifyProduct()">تحقق الآن</button>
-    <div id="result"></div>
+<div class="wrapper">
+    <div class="brand-logo">DAHERINK</div>
+    <p class="tagline">Premium Streetwear & Development</p>
+
+    <div class="links-container">
+        <a href="https://www.shopify.com" target="_blank" class="btn">Shop on Shopify</a>
+        <a href="https://www.etsy.com" target="_blank" class="btn">Shop on Etsy</a>
+        <a href="https://daherink.com/verify" target="_blank" class="btn btn-outline">Verify Authenticity</a>
+    </div>
+
+    <footer>© 2026 DAHERINK. ALL RIGHTS RESERVED.</footer>
 </div>
-
-<script>
-    // إعدادات Supabase التي قدمتها
-    const SUPABASE_URL = 'https://zguugevtftnsfdrdhqvm.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_ybeqqSdk_4GiwzZI7ru0Kg_wzB3lcX5';
-    
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function verifyProduct() {
-        const serial = document.getElementById('serialInput').value;
-        const resultDiv = document.getElementById('result');
-        
-        if (!serial) {
-            resultDiv.innerHTML = "يرجى إدخال الرقم التسلسلي";
-            resultDiv.className = "error";
-            return;
-        }
-
-        resultDiv.innerHTML = "جاري التحقق...";
-
-        // البحث في جدول اسمه 'products' عن الرقم التسلسلي
-        const { data, error } = await _supabase
-            .from('products')
-            .select('*')
-            .eq('serial_number', serial)
-            .single();
-
-        if (error || !data) {
-            resultDiv.innerHTML = "عذراً، هذا الرقم غير مسجل كمنتج أصلي.";
-            resultDiv.className = "error";
-        } else {
-            resultDiv.innerHTML = `تم التأكد! المنتج أصلي: ${data.product_name || 'قطعة premium'}`;
-            resultDiv.className = "success";
-        }
-    }
-</script>
 
 </body>
 </html>
