@@ -139,11 +139,11 @@
 
     <script>
         /* =========================================
-           1. SUPABASE CONFIGURATION (قم بتعديل هذه)
+           1. SUPABASE CONFIGURATION
            ========================================= */
-        const SUPABASE_URL = 'ضع_رابط_قاعدة_البيانات_هنا';
-        const SUPABASE_ANON_KEY = 'ضع_مفتاح_API_هنا';
-        const TABLE_NAME = 'products'; // غيّر هذا إذا كان اسم الجدول مختلفاً
+        const SUPABASE_URL = 'https://zguugevtftnsfdrdhqvm.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_ybeqqSdk_4GiwzZI7ru0Kg_wzB3lcX5';
+        const TABLE_NAME = 'products'; 
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         /* =========================================
@@ -222,7 +222,7 @@
         window.onload = async () => {
             updateUI();
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id'); // يستخرج الرقم من ?id=1
+            const id = urlParams.get('id');
 
             if (!id) {
                 alert(dict[currentLang]['not-found']);
@@ -230,7 +230,6 @@
                 return;
             }
 
-            // جلب بيانات القطعة من Supabase بناءً على الـ id
             const { data, error } = await db.from(TABLE_NAME).select('*').eq('id', id).single();
 
             if (error || !data) {
@@ -242,11 +241,9 @@
             document.getElementById('loader-icon').style.display = 'none';
             document.getElementById('splash-action').style.display = 'block';
 
-            // إذا كانت القطعة غير مفعلة (الرابط فارغ)
             if (!currentItem.target_url || currentItem.status === 'unassigned') {
                 openEditMode(); 
             } else {
-                // القطعة مفعلة: ابدأ العداد للانتقال
                 startCountdown(3, currentItem.target_url);
             }
         };
@@ -259,18 +256,17 @@
                 redirectText.innerHTML = dict[currentLang]['redirecting'].replace('{s}', timeLeft);
                 if (timeLeft <= 0) {
                     clearInterval(countdownTimer);
-                    window.location.href = url; // التوجيه التلقائي
+                    window.location.href = url;
                 }
                 timeLeft -= 1;
             }, 1000);
         }
 
         function openEditMode() {
-            clearInterval(countdownTimer); // إيقاف الانتقال إذا ضغط المالك على إدارة
+            clearInterval(countdownTimer); 
             document.getElementById('screen-splash').classList.remove('active');
             document.getElementById('screen-manage').classList.add('active');
             
-            // إذا كانت أول مرة يطالب بالإيميل، إذا تم إدخاله مسبقاً نخفيه
             if (!currentItem.owner_email) {
                 document.getElementById('input-email').style.display = 'block';
             }
@@ -279,7 +275,6 @@
             }
         }
 
-        /* تصحيح الرابط تلقائياً وفحص اللائحة البيضاء */
         function validateURL(inputStr) {
             let cleanStr = inputStr.trim();
             if (!/^https?:\/\//i.test(cleanStr)) { cleanStr = 'https://' + cleanStr; }
@@ -297,20 +292,17 @@
             const emailInput = document.getElementById('input-email').value;
             const urlInput = document.getElementById('input-url').value;
 
-            // التحقق من الـ PIN
             if (pinInput !== currentItem.pin.toString()) {
                 alert(dict[currentLang]['invalid-pin']);
                 return;
             }
 
-            // التحقق من الرابط وتصحيحه
             const validUrl = validateURL(urlInput);
             if (!validUrl) {
                 document.getElementById('whitelist-sheet').classList.add('active');
                 return;
             }
 
-            // تحديث قاعدة البيانات
             const updates = { target_url: validUrl, status: 'assigned' };
             if (!currentItem.owner_email && emailInput) {
                 updates.owner_email = emailInput;
@@ -321,7 +313,6 @@
             if (error) {
                 alert('Database Error. Try again.');
             } else {
-                // نجاح الحفظ، انتقال فوري
                 window.location.href = validUrl;
             }
         }
