@@ -1,60 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAHERINK | Premium Streetwear</title>
+    <title>تحقق من أصالة المنتج | Premium Heavyweight Apparel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 3rem;
-            letter-spacing: 0.5rem;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-        p {
-            font-size: 1.2rem;
-            color: #888;
-            margin-bottom: 2rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background-color: #fff;
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 0;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            background-color: #888;
-            color: #fff;
-        }
+        body { font-family: sans-serif; background-color: #f4f4f4; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        h1 { font-size: 1.5rem; margin-bottom: 1rem; color: #333; }
+        input { width: 100%; padding: 10px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #000; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #333; }
+        #result { margin-top: 1rem; font-weight: bold; }
+        .success { color: green; }
+        .error { color: red; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>DAHERINK</h1>
-        <p>PREMIUM HEAVYWEIGHT COTTON APPAREL. <br>DESIGNED FOR THE BOLD.</p>
-        <a href="https://daherink.myshopify.com" class="btn">ENTER STORE</a>
-    </div>
+
+<div class="card">
+    <h1>نظام التحقق من القطع الأصلية</h1>
+    <p>أدخل الرقم التسلسلي للقطعة (210-360 GSM)</p>
+    <input type="text" id="serialInput" placeholder="أدخل الرقم هنا...">
+    <button onclick="verifyProduct()">تحقق الآن</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    // إعدادات Supabase التي قدمتها
+    const SUPABASE_URL = 'https://zguugevtftnsfdrdhqvm.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_ybeqqSdk_4GiwzZI7ru0Kg_wzB3lcX5';
+    
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function verifyProduct() {
+        const serial = document.getElementById('serialInput').value;
+        const resultDiv = document.getElementById('result');
+        
+        if (!serial) {
+            resultDiv.innerHTML = "يرجى إدخال الرقم التسلسلي";
+            resultDiv.className = "error";
+            return;
+        }
+
+        resultDiv.innerHTML = "جاري التحقق...";
+
+        // البحث في جدول اسمه 'products' عن الرقم التسلسلي
+        const { data, error } = await _supabase
+            .from('products')
+            .select('*')
+            .eq('serial_number', serial)
+            .single();
+
+        if (error || !data) {
+            resultDiv.innerHTML = "عذراً، هذا الرقم غير مسجل كمنتج أصلي.";
+            resultDiv.className = "error";
+        } else {
+            resultDiv.innerHTML = `تم التأكد! المنتج أصلي: ${data.product_name || 'قطعة premium'}`;
+            resultDiv.className = "success";
+        }
+    }
+</script>
+
 </body>
 </html>
