@@ -6,7 +6,7 @@
     <title>DAHERINK | Verify Authenticity</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* الهوية البصرية: Acid Wash Theme (Charcoal, Dusty Purple, Stone Blue) */
+        /* الهوية البصرية: Acid Wash Theme */
         :root {
             --charcoal: #2A2A2E;
             --dusty-purple: #5A4A6A;
@@ -14,7 +14,6 @@
             --text-light: #F0F0F0;
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #E0E0E0;
         }
 
         body, html {
@@ -193,7 +192,7 @@
                 'error-title': 'NICHT UNTERSTÜTZTER LINK',
                 'error-text': 'Aus Sicherheitsgründen kann dieses Kleidungsstück nur mit vertrauenswürdigen Plattformen verknüpft werden (Social Media, Messenger, Dating-Apps, Musik, DAHERINK).',
                 'invalid-pin': 'FALSCHE PIN. BITTE ERNEUT VERSUCHEN.',
-                'not-found': 'CODE NICHT GEFUNDEN.'
+                'not-found': 'CODE NICHT GEFUNDEN ODER UNGÜLTIG.'
             }
         };
 
@@ -230,6 +229,7 @@
                 return;
             }
 
+            // الاستدعاء يعتمد على اسم العمود 'id'
             const { data, error } = await db.from(TABLE_NAME).select('*').eq('id', id).single();
 
             if (error || !data) {
@@ -241,7 +241,8 @@
             document.getElementById('loader-icon').style.display = 'none';
             document.getElementById('splash-action').style.display = 'block';
 
-            if (!currentItem.target_url || currentItem.status === 'unassigned') {
+            // الاعتماد الكامل على أسماء الأعمدة الجديدة
+            if (!currentItem.target_url || currentItem.status === 'unassigned' || currentItem.status === null) {
                 openEditMode(); 
             } else {
                 startCountdown(3, currentItem.target_url);
@@ -288,10 +289,11 @@
         }
 
         async function saveConfiguration() {
-            const pinInput = document.getElementById('input-pin').value;
-            const emailInput = document.getElementById('input-email').value;
-            const urlInput = document.getElementById('input-url').value;
+            const pinInput = document.getElementById('input-pin').value.trim();
+            const emailInput = document.getElementById('input-email').value.trim();
+            const urlInput = document.getElementById('input-url').value.trim();
 
+            // التحقق من PIN باستخدام العمود 'pin'
             if (pinInput !== currentItem.pin.toString()) {
                 alert(dict[currentLang]['invalid-pin']);
                 return;
@@ -303,7 +305,12 @@
                 return;
             }
 
-            const updates = { target_url: validUrl, status: 'assigned' };
+            // تحديث قاعدة البيانات بأسماء الأعمدة الجديدة المطابقة 100%
+            const updates = { 
+                target_url: validUrl, 
+                status: 'assigned' 
+            };
+            
             if (!currentItem.owner_email && emailInput) {
                 updates.owner_email = emailInput;
             }
@@ -311,7 +318,7 @@
             const { error } = await db.from(TABLE_NAME).update(updates).eq('id', currentItem.id);
 
             if (error) {
-                alert('Database Error. Try again.');
+                alert('Database Error: ' + error.message);
             } else {
                 window.location.href = validUrl;
             }
