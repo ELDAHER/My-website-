@@ -11,7 +11,7 @@
             --olive-green: #4A533E;
             --danger-red: #D9534F;
             --text-light: #F0F0F0;
-            --glass-bg: rgba(20, 20, 25, 0.7);
+            --glass-bg: rgba(20, 20, 25, 0.35); /* تم تخفيف الشفافية ليتنفس نبض الفيديو بوضوح */
             --glass-border: rgba(255, 255, 255, 0.15);
         }
 
@@ -21,7 +21,7 @@
             color: var(--text-light);
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
-            background-color: #5A4A6A;
+            background-color: #2A2A2E;
         }
 
         /* دعم اتجاه اللغة العربية */
@@ -34,8 +34,8 @@
 
         .glass-container {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(15px); /* زيادة التضباب لتعويض تخفيف اللون */
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 30px; width: 90%; max-width: 400px;
@@ -43,14 +43,19 @@
             position: relative; z-index: 10;
         }
 
-        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4)); margin-bottom: 20px; }
+        /* إضافة ظلال للنصوص لضمان القراءة بوضوح مع الخلفية المفتوحة */
+        .glass-container h1, .glass-container p, .glass-container label {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5)); margin-bottom: 20px; }
 
         h1 { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; }
         p.subtitle { font-size: 10px; color: #DDD; letter-spacing: 2px; margin-bottom: 20px; }
 
         input {
             width: 100%; padding: 12px; margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border);
             color: white; border-radius: 4px; box-sizing: border-box;
             font-family: inherit; font-size: 12px; outline: none;
         }
@@ -85,7 +90,7 @@
         
         .lang-menu {
             display: none; position: absolute; top: 100%; right: 0; margin-top: 5px;
-            background: rgba(20, 20, 25, 0.9); border: 1px solid var(--glass-border);
+            background: rgba(20, 20, 25, 0.95); border: 1px solid var(--glass-border);
             border-radius: 6px; overflow: hidden; width: max-content;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
@@ -125,16 +130,30 @@
     <div class="lang-dropdown">
         <div class="lang-toggle" onclick="toggleLangMenu()">
             <span id="t-lang-label">Language</span>
-            <span id="current-flag">🇺🇸</span>
+            <span id="current-flag">🇩🇪</span>
             <span style="font-size: 8px;">▼</span>
         </div>
         <div class="lang-menu" id="lang-menu">
-            <div class="lang-option" onclick="setLang('ar')"><span>🇸🇾</span> العربية</div>
             <div class="lang-option" onclick="setLang('de')"><span>🇩🇪</span> Deutsch</div>
             <div class="lang-option" onclick="setLang('en')"><span>🇺🇸</span> English</div>
             <div class="lang-option" onclick="setLang('fr')"><span>🇫🇷</span> Français</div>
-            <div class="lang-option" onclick="setLang('it')"><span>🇮🇹</span> Italiano</div>
             <div class="lang-option" onclick="setLang('es')"><span>🇪🇸</span> Español</div>
+            <div class="lang-option" onclick="setLang('it')"><span>🇮🇹</span> Italiano</div>
+            <div class="lang-option" onclick="setLang('tr')"><span>🇹🇷</span> Türkçe</div>
+            <div class="lang-option" onclick="setLang('ar')">
+                <span style="display:inline-flex; align-items:center;">
+                    <svg style="width: 1.2em; height: 0.9em; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="9" height="6" fill="#000"/>
+                        <rect width="9" height="4" fill="#fff"/>
+                        <rect width="9" height="2" fill="#ce1126"/>
+                        <g fill="#007a3d">
+                            <polygon points="3,2.4 3.3,3.3 2.5,2.7 3.5,2.7 2.7,3.3" />
+                            <polygon points="6,2.4 6.3,3.3 5.5,2.7 6.5,2.7 5.7,3.3" />
+                        </g>
+                    </svg>
+                </span>
+                العربية
+            </div>
         </div>
     </div>
 
@@ -149,7 +168,7 @@
             <p class="subtitle" id="t-splash-sub">Verifying blockchain registry...</p>
             
             <div id="splash-action" style="display: none; margin-top: 20px;">
-                <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
+                <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
                 <p style="font-size: 11px; text-transform: none; margin-bottom: 25px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
                 
                 <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
@@ -196,6 +215,9 @@
         let currentItem = null;
         let countdownTimer;
 
+        // كود العلم السوري كمتغير لسهولة حقنه
+        const syriaSvgCode = `<svg style="width: 1.2em; height: 0.9em; vertical-align: middle; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="6" fill="#000"/><rect width="9" height="4" fill="#fff"/><rect width="9" height="2" fill="#ce1126"/><g fill="#007a3d"><polygon points="3,2.4 3.3,3.3 2.5,2.7 3.5,2.7 2.7,3.3" /><polygon points="6,2.4 6.3,3.3 5.5,2.7 6.5,2.7 5.7,3.3" /></g></svg>`;
+
         const allowedDomains = [
             'instagram.com', 'tiktok.com', 'tiktok.me', 'facebook.com', 'fb.com', 'twitter.com', 'x.com', 'threads.net', 'snapchat.com', 'bereal.com', 'linkedin.com', 'mastodon.social', 'mastodon.world', 'reddit.com', 'pinterest.com', 'vk.com', 'weibo.com', 'douyin.com', 'kuaishou.com', 'tumblr.com', 'flickr.com',
             'youtube.com', 'youtu.be', 'vimeo.com', 'dailymotion.com', 'twitch.tv', 'kick.com', 'rumble.com', 'odysee.com', 'bilibili.com', 'vevo.com',
@@ -211,18 +233,6 @@
         ];
 
         const dict = {
-            'en': {
-                'lang-label': 'Language', 'flag': '🇺🇸',
-                'splash-title': 'AUTHENTICATING', 'splash-sub': 'Verifying blockchain registry...',
-                'authentic': '✅ AUTHENTIC GARMENT', 'redirecting': 'Redirecting in 3.5s...',
-                'manage-btn': 'OWNER? MANAGE LINK', 'report-btn': 'REPORT MALICIOUS LINK',
-                'manage-title': 'CONFIGURATION', 'manage-sub': 'Update your digital identity',
-                'placeholder-pin': 'ENTER CARE-LABEL PIN', 'placeholder-url': 'ENTER NEW LINK',
-                'save-btn': 'SAVE SECURELY', 'shop-btn': 'VISIT DAHERINK SHOP',
-                'error-title': 'SECURITY BLOCK', 'error-text': 'Only trusted platforms are permitted.', 'understood-btn': 'UNDERSTOOD',
-                'report-sheet-title': 'REPORT LINK', 'report-text': 'If this garment links to illegal or malicious content, please report it.', 'submit-report': 'SUBMIT REPORT', 'cancel-btn': 'CANCEL',
-                'invalid-pin': 'INVALID PIN.'
-            },
             'de': {
                 'lang-label': 'Sprache', 'flag': '🇩🇪',
                 'splash-title': 'AUTHENTIFIZIERUNG', 'splash-sub': 'Blockchain-Register wird geprüft...',
@@ -235,17 +245,17 @@
                 'report-sheet-title': 'LINK MELDEN', 'report-text': 'Wenn dieses Kleidungsstück auf illegale Inhalte verlinkt, melde es bitte.', 'submit-report': 'MELDUNG ABSENDEN', 'cancel-btn': 'ABBRECHEN',
                 'invalid-pin': 'FALSCHE PIN.'
             },
-            'ar': {
-                'lang-label': 'اللغة', 'flag': '🇸🇾',
-                'splash-title': 'جاري التحقق', 'splash-sub': 'يتم فحص سجل البلوكشين...',
-                'authentic': '✅ منتج أصلي وموثق', 'redirecting': 'سيتم تحويلك خلال 3.5 ثوانٍ...',
-                'manage-btn': 'هل أنت المالك؟ تعديل الرابط', 'report-btn': 'تبليغ عن رابط مخالف',
-                'manage-title': 'إعدادات القطعة', 'manage-sub': 'تحديث هويتك الرقمية',
-                'placeholder-pin': 'أدخل رمز الأمان (PIN)', 'placeholder-url': 'أدخل الرابط الجديد',
-                'save-btn': 'حفظ التعديلات آمنة', 'shop-btn': 'زيارة متجر DAHERINK',
-                'error-title': 'حظر أمني', 'error-text': 'الرابط غير مدعوم. مسموح فقط بالمنصات الموثوقة.', 'understood-btn': 'مفهوم',
-                'report-sheet-title': 'تبليغ عن رابط', 'report-text': 'إذا كان هذا المنتج يوجه لمحتوى مخالف، يرجى التبليغ عنه.', 'submit-report': 'إرسال التبليغ', 'cancel-btn': 'إلغاء',
-                'invalid-pin': 'رمز الأمان غير صحيح.'
+            'en': {
+                'lang-label': 'Language', 'flag': '🇺🇸',
+                'splash-title': 'AUTHENTICATING', 'splash-sub': 'Verifying blockchain registry...',
+                'authentic': '✅ AUTHENTIC GARMENT', 'redirecting': 'Redirecting in 3.5s...',
+                'manage-btn': 'OWNER? MANAGE LINK', 'report-btn': 'REPORT MALICIOUS LINK',
+                'manage-title': 'CONFIGURATION', 'manage-sub': 'Update your digital identity',
+                'placeholder-pin': 'ENTER CARE-LABEL PIN', 'placeholder-url': 'ENTER NEW LINK',
+                'save-btn': 'SAVE SECURELY', 'shop-btn': 'VISIT DAHERINK SHOP',
+                'error-title': 'SECURITY BLOCK', 'error-text': 'Only trusted platforms are permitted.', 'understood-btn': 'UNDERSTOOD',
+                'report-sheet-title': 'REPORT LINK', 'report-text': 'If this garment links to illegal or malicious content, please report it.', 'submit-report': 'SUBMIT REPORT', 'cancel-btn': 'CANCEL',
+                'invalid-pin': 'INVALID PIN.'
             },
             'fr': {
                 'lang-label': 'Langue', 'flag': '🇫🇷',
@@ -259,6 +269,18 @@
                 'report-sheet-title': 'SIGNALER LE LIEN', 'report-text': 'Si ce vêtement renvoie à un contenu malveillant, veuillez le signaler.', 'submit-report': 'SOUMETTRE', 'cancel-btn': 'ANNULER',
                 'invalid-pin': 'CODE PIN INVALIDE.'
             },
+            'es': {
+                'lang-label': 'Idioma', 'flag': '🇪🇸',
+                'splash-title': 'AUTENTICACIÓN', 'splash-sub': 'Verificando registro blockchain...',
+                'authentic': '✅ PRENDA AUTÉNTICA', 'redirecting': 'Redirigiendo en 3.5s...',
+                'manage-btn': '¿PROPIETARIO? GESTIONAR ENLACE', 'report-btn': 'REPORTAR ENLACE MALICIOSO',
+                'manage-title': 'CONFIGURACIÓN', 'manage-sub': 'Actualiza tu identidad digital',
+                'placeholder-pin': 'INGRESE PIN DE ETIQUETA', 'placeholder-url': 'INGRESE NUEVO ENLACE',
+                'save-btn': 'GUARDAR SEGURO', 'shop-btn': 'VISITAR TIENDA',
+                'error-title': 'BLOQUEO DE SEGURIDAD', 'error-text': 'Solo se permiten plataformas de confianza.', 'understood-btn': 'ENTENDIDO',
+                'report-sheet-title': 'REPORTAR ENLACE', 'report-text': 'Si esta prenda enlaza a contenido malicioso, repórtelo.', 'submit-report': 'ENVIAR REPORTE', 'cancel-btn': 'CANCELAR',
+                'invalid-pin': 'PIN INVÁLIDO.'
+            },
             'it': {
                 'lang-label': 'Lingua', 'flag': '🇮🇹',
                 'splash-title': 'AUTENTICAZIONE', 'splash-sub': 'Verifica registro blockchain...',
@@ -271,21 +293,33 @@
                 'report-sheet-title': 'SEGNALA LINK', 'report-text': 'Se questo capo rimanda a contenuti dannosi, segnalalo.', 'submit-report': 'INVIA SEGNALAZIONE', 'cancel-btn': 'ANNULLA',
                 'invalid-pin': 'PIN NON VALIDO.'
             },
-            'es': {
-                'lang-label': 'Idioma', 'flag': '🇪🇸',
-                'splash-title': 'AUTENTICACIÓN', 'splash-sub': 'Verificando registro blockchain...',
-                'authentic': '✅ PRENDA AUTÉNTICA', 'redirecting': 'Redirigiendo en 3.5s...',
-                'manage-btn': '¿PROPIETARIO? GESTIONAR ENLACE', 'report-btn': 'REPORTAR ENLACE MALICIOSO',
-                'manage-title': 'CONFIGURACIÓN', 'manage-sub': 'Actualiza tu identidad digital',
-                'placeholder-pin': 'INGRESE PIN DE ETIQUETA', 'placeholder-url': 'INGRESE NUEVO ENLACE',
-                'save-btn': 'GUARDAR SEGURO', 'shop-btn': 'VISITAR TIENDA',
-                'error-title': 'BLOQUEO DE SEGURIDAD', 'error-text': 'Solo se permiten plataformas de confianza.', 'understood-btn': 'ENTENDIDO',
-                'report-sheet-title': 'REPORTAR ENLACE', 'report-text': 'Si esta prenda enlaza a contenido malicioso, repórtelo.', 'submit-report': 'ENVIAR REPORTE', 'cancel-btn': 'CANCELAR',
-                'invalid-pin': 'PIN INVÁLIDO.'
+            'tr': {
+                'lang-label': 'Dil', 'flag': '🇹🇷',
+                'splash-title': 'DOĞRULANIYOR', 'splash-sub': 'Blockchain kaydı doğrulanıyor...',
+                'authentic': '✅ ORİJİNAL ÜRÜN', 'redirecting': '3.5 saniye içinde yönlendiriliyor...',
+                'manage-btn': 'SAHİBİ MİSİNİZ? LİNKİ YÖNETİN', 'report-btn': 'KÖTÜ NİYETLİ LİNK BİLDİR',
+                'manage-title': 'YAPILANDIRMA', 'manage-sub': 'Dijital kimliğinizi güncelleyin',
+                'placeholder-pin': 'ETİKET PIN GİRİN', 'placeholder-url': 'YENİ LİNK GİRİN',
+                'save-btn': 'GÜVENLE KAYDET', 'shop-btn': 'MAĞAZAYI ZİYARET ET',
+                'error-title': 'GÜVENLİK ENGELİ', 'error-text': 'Sadece güvenilir platformlara izin verilir.', 'understood-btn': 'ANLADIM',
+                'report-sheet-title': 'LİNKİ BİLDİR', 'report-text': 'Eğer bu kıyafet zararlı bir içeriğe yönlendiriyorsa, lütfen bildirin.', 'submit-report': 'BİLDİR', 'cancel-btn': 'İPTAL',
+                'invalid-pin': 'GEÇERSİZ PIN.'
+            },
+            'ar': {
+                'lang-label': 'اللغة', 'flag': syriaSvgCode,
+                'splash-title': 'جاري التحقق', 'splash-sub': 'يتم فحص سجل البلوكشين...',
+                'authentic': '✅ منتج أصلي وموثق', 'redirecting': 'سيتم تحويلك خلال 3.5 ثوانٍ...',
+                'manage-btn': 'هل أنت المالك؟ تعديل الرابط', 'report-btn': 'تبليغ عن رابط مخالف',
+                'manage-title': 'إعدادات القطعة', 'manage-sub': 'تحديث هويتك الرقمية',
+                'placeholder-pin': 'أدخل رمز الأمان (PIN)', 'placeholder-url': 'أدخل الرابط الجديد',
+                'save-btn': 'حفظ التعديلات آمنة', 'shop-btn': 'زيارة متجر DAHERINK',
+                'error-title': 'حظر أمني', 'error-text': 'الرابط غير مدعوم. مسموح فقط بالمنصات الموثوقة.', 'understood-btn': 'مفهوم',
+                'report-sheet-title': 'تبليغ عن رابط', 'report-text': 'إذا كان هذا المنتج يوجه لمحتوى مخالف، يرجى التبليغ عنه.', 'submit-report': 'إرسال التبليغ', 'cancel-btn': 'إلغاء',
+                'invalid-pin': 'رمز الأمان غير صحيح.'
             }
         };
 
-        let currentLang = 'en';
+        let currentLang = 'de';
 
         function initLanguage() {
             const savedLang = localStorage.getItem('daherink_lang');
@@ -321,7 +355,7 @@
             else document.body.classList.remove('rtl');
 
             document.getElementById('t-lang-label').innerText = dict[currentLang]['lang-label'];
-            document.getElementById('current-flag').innerText = dict[currentLang]['flag'];
+            document.getElementById('current-flag').innerHTML = dict[currentLang]['flag']; // innerHTML لدعم SVG
             
             document.getElementById('t-splash-title').innerText = dict[currentLang]['splash-title'];
             document.getElementById('t-splash-sub').innerText = dict[currentLang]['splash-sub'];
@@ -427,7 +461,7 @@
         }
 
         function submitReport() {
-            alert('Report submitted successfully.');
+            alert('Report submitted successfully. Our team will review this link.');
             closeSheet('report-sheet');
         }
     </script>
