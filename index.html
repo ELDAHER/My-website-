@@ -92,14 +92,19 @@
             background-color: #fff; color: #000; border-color: #fff;
         }
 
-        /* زر التحقق النصي المخفي */
+        /* العبارة الذهبية التفاعلية (بديل زر التحقق) */
         .verify-trigger {
-            font-size: 0.6rem; color: rgba(255, 255, 255, 0.6);
+            font-size: 0.6rem; color: #D4AF37; /* لون ذهبي */
+            font-weight: bold;
+            text-shadow: 0 2px 8px rgba(212, 175, 55, 0.5); /* توهج ذهبي */
             text-decoration: none; letter-spacing: 2px; text-transform: uppercase;
             cursor: pointer; transition: 0.3s; display: inline-block; margin-bottom: 20px;
             opacity: 0; animation: fadeIn 1.5s 1.5s forwards;
         }
-        .verify-trigger:hover { color: #fff; }
+        .verify-trigger:hover { 
+            color: #fff; 
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        }
 
         .verify-message {
             font-size: 0.65rem; color: #D4AF37; /* لون ذهبي */
@@ -164,7 +169,7 @@
         <a href="https://www.etsy.com" target="_blank" class="btn btn-secondary" id="t-shop-etsy">SHOP ON ETSY</a>
     </div>
 
-    <a href="#" class="verify-trigger" id="btn-verify">VERIFY AUTHENTICITY</a>
+    <a href="#" class="verify-trigger" id="btn-verify">WEAR YOUR MESSAGE. LET THE WORLD DISCOVER IT.</a>
     <div class="verify-message" id="msg-verify">TO VERIFY, PLEASE SCAN THE QR CODE ON YOUR GARMENT</div>
 
     <footer>© 2026 DAHERINK. ALL RIGHTS RESERVED.</footer>
@@ -181,7 +186,7 @@
             'tagline-luxury': 'IN STILLE GEFERTIGT. MIT IDENTITÄT GETRAGEN.',
             'shop-shopify': 'AUF SHOPIFY KAUFEN',
             'shop-etsy': 'AUF ETSY KAUFEN',
-            'verify-btn': 'ECHTHEIT PRÜFEN',
+            'verify-btn': 'TRAGE DEINE BOTSCHAFT. LASS DIE WELT SIE ENTDECKEN.',
             'scan-msg': 'ZUR PRÜFUNG BITTE DEN QR-CODE AUF DEM KLEIDUNGSSTÜCK SCANNEN'
         },
         'en': {
@@ -190,7 +195,7 @@
             'tagline-luxury': 'CRAFTED IN SILENCE. WORN WITH IDENTITY.',
             'shop-shopify': 'SHOP ON SHOPIFY',
             'shop-etsy': 'SHOP ON ETSY',
-            'verify-btn': 'VERIFY AUTHENTICITY',
+            'verify-btn': 'WEAR YOUR MESSAGE. LET THE WORLD DISCOVER IT.',
             'scan-msg': 'TO VERIFY, PLEASE SCAN THE QR CODE ON YOUR GARMENT'
         },
         'fr': {
@@ -199,7 +204,7 @@
             'tagline-luxury': 'FAÇONNÉ EN SILENCE. PORTÉ AVEC IDENTITÉ.',
             'shop-shopify': 'ACHETER SUR SHOPIFY',
             'shop-etsy': 'ACHETER SUR ETSY',
-            'verify-btn': 'VÉRIFIER L\'AUTHENTICITÉ',
+            'verify-btn': 'PORTEZ VOTRE MESSAGE. LAISSEZ LE MONDE LE DÉCOUVRIR.',
             'scan-msg': 'POUR VÉRIFIER, VEUILLEZ SCANNER LE QR CODE SUR VOTRE VÊTEMENT'
         },
         'es': {
@@ -208,7 +213,7 @@
             'tagline-luxury': 'CREADO EN SILENCIO. VESTIDO CON IDENTIDAD.',
             'shop-shopify': 'COMPRAR EN SHOPIFY',
             'shop-etsy': 'COMPRAR EN ETSY',
-            'verify-btn': 'VERIFICAR AUTENTICIDAD',
+            'verify-btn': 'VISTE TU MENSAJE. DEJA QUE EL MUNDO LO DESCUBRA.',
             'scan-msg': 'PARA VERIFICAR, ESCANEE EL CÓDIGO QR EN SU PRENDA'
         },
         'it': {
@@ -217,7 +222,7 @@
             'tagline-luxury': 'CREATO NEL SILENZIO. INDOSSATO CON IDENTITÀ.',
             'shop-shopify': 'ACQUISTA SU SHOPIFY',
             'shop-etsy': 'ACQUISTA SU ETSY',
-            'verify-btn': 'VERIFICA AUTENTICITÀ',
+            'verify-btn': 'INDOSSA IL TUO MESSAGGIO. LASCIA CHE IL MONDO LO SCOPRA.',
             'scan-msg': 'PER VERIFICARE, SCANSIONA IL CODICE QR SUL TUO CAPO'
         },
         'tr': {
@@ -226,7 +231,7 @@
             'tagline-luxury': 'SESSİZLİKTE ÜRETİLDİ. KİMLİKLE GİYİLDİ.',
             'shop-shopify': 'SHOPIFY\'DA ALIŞVERİŞ YAP',
             'shop-etsy': 'ETSY\'DE ALIŞVERİŞ YAP',
-            'verify-btn': 'ORİJİNALLİĞİ DOĞRULA',
+            'verify-btn': 'MESAJINI GİY. BIRAK DÜNYA ONU KEŞFETSİN.',
             'scan-msg': 'DOĞRULAMAK İÇİN LÜTFEN KIYAFETİNİZDEKİ QR KODU OKUTUN'
         },
         'ar': {
@@ -235,7 +240,7 @@
             'tagline-luxury': 'صُنعت في صمت. وتُرتدى بهوية.',
             'shop-shopify': 'تسوق على شوبيفاي',
             'shop-etsy': 'تسوق على إتسي',
-            'verify-btn': 'التحقق من الأصالة',
+            'verify-btn': 'ارتدِ رسالتك. دع العالم يكتشفها.',
             'scan-msg': 'للتحقق، يرجى مسح الباركود الموجود على قطعتك'
         }
     };
