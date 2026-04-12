@@ -30,52 +30,57 @@
             object-fit: cover; z-index: 0;
         }
 
+        /* الحاوية الزجاجية الموحدة - شفافة بنسبة 80% وأصغر حجماً */
         .glass-wrapper {
-            width: 90%; max-width: 400px;
-            text-align: center; position: relative; z-index: 10;
+            width: 90%; 
+            max-width: 360px; /* تم تصغير الحجم ليبدو أرقى */
+            text-align: center; 
+            position: relative; 
+            z-index: 10;
+            background: rgba(20, 20, 25, 0.2); /* 80% شفافية */
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 12px; 
+            padding: 30px 25px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        /* تدرج الشفافية المطلوب */
-        /* شفاف بنسبة 95% */
-        .panel-logo { background: rgba(20, 20, 25, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); } 
-        /* شفاف بنسبة 90% */
-        .panel-info { background: rgba(20, 20, 25, 0.10); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); } 
-        /* معتم للكتابة */
-        .panel-input { background: rgba(20, 20, 25, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--glass-border); box-shadow: 0 8px 20px rgba(0,0,0,0.5); } 
-        /* شفاف بنسبة 70% */
-        .panel-buttons { background: rgba(20, 20, 25, 0.30); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); } 
+        .brand-logo { width: 110px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5)); display: block; margin: 0 auto 25px auto; }
 
-        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5)); display: block; margin: 0 auto; }
+        h1 { font-size: 16px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        p.subtitle { font-size: 9px; color: #DDD; letter-spacing: 2px; margin-bottom: 25px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-        h1 { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; text-shadow: 0 2px 8px rgba(0,0,0,1); }
-        p.subtitle { font-size: 10px; color: #DDD; letter-spacing: 2px; margin-bottom: 0; text-shadow: 0 2px 8px rgba(0,0,0,1); }
-
+        /* حقول الإدخال الزجاجية (ليست سوداء قاتمة) */
         input {
             width: 100%; padding: 14px; margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.6); border: 1px solid var(--glass-border);
-            color: white; border-radius: 4px; box-sizing: border-box; font-family: inherit; font-size: 12px; outline: none;
+            background: rgba(255, 255, 255, 0.05); /* زجاج شبه شفاف */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* حدود بيضاء رقيقة لتحديد المكان */
+            color: white; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 11px; outline: none;
+            backdrop-filter: blur(5px);
         }
-        input:focus { border-color: var(--olive-green); }
-        input:last-child { margin-bottom: 0; }
+        input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        input:focus { border-color: #fff; background: rgba(255, 255, 255, 0.1); }
+        input:last-of-type { margin-bottom: 25px; }
 
         button {
             width: 100%; padding: 14px; background: var(--text-light); color: var(--charcoal);
-            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; font-size: 11px; margin-bottom: 10px;
+            border: none; border-radius: 6px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; font-size: 11px; margin-bottom: 12px;
         }
         button:last-child { margin-bottom: 0; }
         
         button.owner-btn { background: var(--olive-green); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(74, 83, 62, 0.5); }
         button.owner-btn:hover { background: #5d684e; }
         button.secondary { background: transparent; color: var(--text-light); border: 1px solid var(--glass-border); }
-        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 9px; padding: 10px; margin-top: 10px; }
+        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 9px; padding: 10px; margin-top: 5px; }
 
         /* القائمة المنسدلة */
         .lang-dropdown { position: absolute; top: 20px; right: 20px; z-index: 20; text-align: left; }
         body.rtl .lang-dropdown { right: auto; left: 20px; text-align: right; }
-        .lang-toggle { background: rgba(0,0,0,0.7); border: 1px solid var(--glass-border); color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(5px); }
+        .lang-toggle { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(5px); }
         .lang-toggle:hover { background: rgba(0,0,0,0.8); }
-        .lang-menu { display: none; position: absolute; top: 100%; right: 0; margin-top: 5px; background: rgba(20, 20, 25, 0.98); border: 1px solid var(--glass-border); border-radius: 6px; overflow: hidden; width: max-content; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .lang-menu { display: none; position: absolute; top: 100%; right: 0; margin-top: 5px; background: rgba(20, 20, 25, 0.95); border: 1px solid var(--glass-border); border-radius: 6px; overflow: hidden; width: max-content; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         body.rtl .lang-menu { right: auto; left: 0; }
         .lang-menu.show { display: block; }
         .lang-option { padding: 10px 15px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #DDD; transition: 0.2s; }
@@ -94,7 +99,7 @@
 
         .screen { display: none; }
         .screen.active { display: block; }
-        .loader { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid white; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        .loader { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid white; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -123,43 +128,31 @@
 
     <div class="glass-wrapper">
         
-        <div class="panel-logo">
-            <img src="logo.png" alt="DAHERINK" class="brand-logo" onerror="this.style.display='none'">
-        </div>
+        <img src="logo.png" alt="DAHERINK" class="brand-logo" onerror="this.style.display='none'">
 
         <div id="screen-splash" class="screen active">
-            <div class="panel-info">
-                <div class="loader" id="loader-icon"></div>
-                <h1 id="t-splash-title">AUTHENTICATING</h1>
-                <p class="subtitle" id="t-splash-sub">Verifying blockchain registry...</p>
-            </div>
+            <div class="loader" id="loader-icon"></div>
+            <h1 id="t-splash-title">AUTHENTICATING</h1>
+            <p class="subtitle" id="t-splash-sub">Verifying blockchain registry...</p>
             
             <div id="splash-action" style="display: none;">
-                <div class="panel-buttons">
-                    <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
-                    <p style="font-size: 11px; text-transform: none; margin-bottom: 20px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
-                    <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
-                    <button class="report-btn" onclick="openReportSheet()" id="t-report-btn">REPORT MALICIOUS LINK</button>
-                </div>
+                <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
+                <p style="font-size: 11px; text-transform: none; margin-bottom: 25px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
+                <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
+                <button class="report-btn" onclick="openReportSheet()" id="t-report-btn">REPORT MALICIOUS LINK</button>
             </div>
         </div>
 
         <div id="screen-manage" class="screen">
-            <div class="panel-info">
-                <h1 id="t-manage-title">CONFIGURATION</h1>
-                <p class="subtitle" id="t-manage-sub">Update your digital identity</p>
-            </div>
+            <h1 id="t-manage-title">CONFIGURATION</h1>
+            <p class="subtitle" id="t-manage-sub">Update your digital identity</p>
             
-            <div class="panel-input">
-                <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
-                <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
-                <input type="text" id="input-url" placeholder="ENTER NEW LINK" required>
-            </div>
+            <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
+            <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
+            <input type="text" id="input-url" placeholder="ENTER NEW LINK" required>
             
-            <div class="panel-buttons">
-                <button onclick="saveConfiguration()" id="t-save-btn">SAVE SECURELY</button>
-                <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
-            </div>
+            <button onclick="saveConfiguration()" id="t-save-btn">SAVE SECURELY</button>
+            <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
         </div>
 
     </div>
@@ -190,7 +183,7 @@
         let currentItem = null;
         let countdownTimer;
 
-        /* العلم السوري الجديد (3 أقسام: أخضر أعلى، أبيض وسط مع 3 نجوم حمراء، أسود أسفل) */
+        /* العلم السوري الجديد (أخضر أعلى، أبيض وسط مع 3 نجوم حمراء، أسود أسفل) */
         const syriaSvg = `<svg style="width: 1.2em; height: 0.9em; vertical-align: middle; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="6" fill="#000"/><rect width="9" height="4" fill="#fff"/><rect width="9" height="2" fill="#007a3d"/><g fill="#ce1126"><polygon points="2.25,2.4 2.55,3.3 1.75,2.7 2.75,2.7 1.95,3.3"/><polygon points="4.5,2.4 4.8,3.3 4,2.7 5,2.7 4.2,3.3"/><polygon points="6.75,2.4 7.05,3.3 6.25,2.7 7.25,2.7 6.45,3.3"/></g></svg>`;
 
         const allowedDomains = [
@@ -297,7 +290,7 @@
         let currentLang = 'en';
 
         // دمج العلم السوري في قائمة اللغات
-        document.getElementById('syria-option').insertAdjacentHTML('afterbegin', '<span style="display:inline-flex; align-items:center;">' + syriaSvg + '</span>');
+        document.getElementById('syria-option').insertAdjacentHTML('afterbegin', '<span style="display:inline-flex; align-items:center;">' + syriaSvg + '</span>&nbsp;&nbsp;');
 
         function initLanguage() {
             const savedLang = localStorage.getItem('daherink_lang');
