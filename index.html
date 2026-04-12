@@ -3,177 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAHERINK | Official Linktree</title>
+    <title>DAHERINK | Official</title>
     <style>
         /* Base Reset */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body, html { 
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: #ffffff; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden; 
-            background-color: #1A1A1A; 
-            text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; background-color: #1A1A1A; 
         }
 
         body.rtl { direction: rtl; font-family: 'Arial', sans-serif; }
 
-        /* فيديو الخلفية المائي مع الصورة الاحتياطية */
+        /* فيديو الخلفية المائي */
         #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; z-index: 0;
         }
 
-        /* Glassmorphism Container */
+        /* اللوحة الزجاجية الموحدة (Crystal Glass) */
         .wrapper {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 420px;
+            position: relative; z-index: 10;
+            width: 90%; max-width: 380px;
             text-align: center;
-            background: rgba(20, 20, 25, 0.4); 
-            padding: 45px 25px 30px 25px;
-            border-radius: 4px;
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            background: rgba(20, 20, 25, 0.2); /* 80% شفافية */
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 45px 25px 35px 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            /* تأثير الدخول السينمائي للوحة */
+            animation: fadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Brand Identity */
+        /* الشعار الذهبي */
         .brand-logo {
-            font-size: 2.4rem;
-            font-weight: 900;
-            letter-spacing: 8px;
-            margin-bottom: 10px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            width: 130px; height: auto;
+            display: block; margin: 0 auto 10px auto;
+            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.8));
+            opacity: 0; animation: fadeIn 1.5s 0.3s forwards;
         }
 
-        .tagline {
-            font-size: 0.7rem;
-            color: #CCC;
-            margin-bottom: 40px;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        /* الشعارات اللفظية */
+        .tagline-small {
+            font-size: 0.55rem; color: #AAA; letter-spacing: 3px;
+            text-transform: uppercase; margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            opacity: 0; animation: fadeIn 1.5s 0.6s forwards;
         }
 
-        /* Action Buttons with Flexbox for Icons */
+        .tagline-luxury {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-style: italic; font-size: 0.8rem;
+            color: #FFF; letter-spacing: 1.5px; margin-bottom: 40px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+            opacity: 0; animation: fadeIn 1.5s 0.9s forwards;
+        }
+
+        /* الأزرار (تصميم فاخر ومباشر) */
         .links-container {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 30px;
+            display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px;
+            opacity: 0; animation: fadeIn 1.5s 1.2s forwards;
         }
 
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            padding: 18px;
-            text-decoration: none;
-            color: #000;
-            background-color: #fff;
-            border: 1px solid #fff;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: block; width: 100%; padding: 16px;
+            text-decoration: none; font-weight: 700; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 2px; border-radius: 6px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            transition: all 0.3s ease;
+        .btn-primary {
+            background-color: #fff; color: #000; border: 1px solid #fff;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); /* توهج ذهبي */
+            border-color: #D4AF37; transform: scale(1.02);
         }
 
-        .btn:hover {
-            background-color: transparent;
-            color: #fff;
-            transform: scale(1.02);
+        .btn-secondary {
+            background-color: transparent; color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-secondary:hover {
+            background-color: #fff; color: #000; border-color: #fff;
         }
 
-        /* Verify Text Button */
+        /* زر التحقق النصي المخفي */
         .verify-trigger {
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: inline-block;
-            margin-bottom: 20px;
-            border-bottom: 1px solid transparent;
+            font-size: 0.6rem; color: rgba(255, 255, 255, 0.6);
+            text-decoration: none; letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s; display: inline-block; margin-bottom: 20px;
+            opacity: 0; animation: fadeIn 1.5s 1.5s forwards;
         }
-
-        .verify-trigger:hover {
-            color: #fff;
-            border-bottom: 1px solid #fff;
-        }
+        .verify-trigger:hover { color: #fff; }
 
         .verify-message {
-            font-size: 0.65rem;
-            color: #85B079;
-            letter-spacing: 1.5px;
-            font-weight: bold;
-            display: none;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            font-size: 0.65rem; color: #D4AF37; /* لون ذهبي */
+            letter-spacing: 1.5px; font-weight: bold; display: none; margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9); text-transform: uppercase;
         }
 
-        /* Legal Footer */
         footer {
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 2px;
+            font-size: 0.55rem; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase;
+            opacity: 0; animation: fadeIn 1.5s 1.8s forwards;
         }
 
         /* القائمة المنسدلة للغات */
-        .lang-dropdown {
-            position: absolute; top: 20px; right: 20px; z-index: 20;
-            text-align: left;
-        }
+        .lang-dropdown { position: absolute; top: 20px; right: 20px; z-index: 20; text-align: left; }
         body.rtl .lang-dropdown { right: auto; left: 20px; text-align: right; }
-
-        .lang-toggle {
-            background: rgba(0,0,0,0.6); border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; 
-            font-size: 10px; display: flex; align-items: center; gap: 8px;
-            backdrop-filter: blur(5px);
-        }
+        .lang-toggle { background: rgba(0,0,0,0.6); border: 1px solid rgba(255, 255, 255, 0.15); color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 10px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(5px); text-transform: uppercase;}
         .lang-toggle:hover { background: rgba(0,0,0,0.8); }
-        
-        .lang-menu {
-            display: none; position: absolute; top: 100%; right: 0; margin-top: 5px;
-            background: rgba(20, 20, 25, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px; overflow: hidden; width: max-content;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
+        .lang-menu { display: none; position: absolute; top: 100%; right: 0; margin-top: 5px; background: rgba(20, 20, 25, 0.95); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; overflow: hidden; width: max-content; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-transform: uppercase;}
         body.rtl .lang-menu { right: auto; left: 0; }
         .lang-menu.show { display: block; }
-        
-        .lang-option {
-            padding: 10px 15px; font-size: 11px; cursor: pointer;
-            display: flex; align-items: center; gap: 10px; color: #DDD;
-            transition: 0.2s;
-        }
+        .lang-option { padding: 10px 15px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #DDD; transition: 0.2s; }
         .lang-option:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Keyframes للظهور السينمائي */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -184,115 +138,101 @@
 
 <div class="lang-dropdown">
     <div class="lang-toggle" onclick="toggleLangMenu()">
-        <span id="t-lang-label">Language</span>
+        <span id="t-lang-label">LANGUAGE</span>
         <span id="current-flag">🇩🇪</span>
         <span style="font-size: 8px;">▼</span>
     </div>
     <div class="lang-menu" id="lang-menu">
-        <div class="lang-option" onclick="setLang('de')"><span>🇩🇪</span> Deutsch</div>
-        <div class="lang-option" onclick="setLang('en')"><span>🇺🇸</span> English</div>
-        <div class="lang-option" onclick="setLang('fr')"><span>🇫🇷</span> Français</div>
-        <div class="lang-option" onclick="setLang('es')"><span>🇪🇸</span> Español</div>
-        <div class="lang-option" onclick="setLang('it')"><span>🇮🇹</span> Italiano</div>
-        <div class="lang-option" onclick="setLang('tr')"><span>🇹🇷</span> Türkçe</div>
-        <div class="lang-option" onclick="setLang('ar')">
-            <span style="display:inline-flex; align-items:center;">
-                <svg style="width: 1.2em; height: 0.9em; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="9" height="6" fill="#000"/>
-                    <rect width="9" height="4" fill="#fff"/>
-                    <rect width="9" height="2" fill="#ce1126"/>
-                    <g fill="#007a3d">
-                        <polygon points="3,2.4 3.3,3.3 2.5,2.7 3.5,2.7 2.7,3.3" />
-                        <polygon points="6,2.4 6.3,3.3 5.5,2.7 6.5,2.7 5.7,3.3" />
-                    </g>
-                </svg>
-            </span>
-            العربية
-        </div>
+        <div class="lang-option" onclick="setLang('de')"><span>🇩🇪</span> DEUTSCH</div>
+        <div class="lang-option" onclick="setLang('en')"><span>🇺🇸</span> ENGLISH</div>
+        <div class="lang-option" onclick="setLang('fr')"><span>🇫🇷</span> FRANÇAIS</div>
+        <div class="lang-option" onclick="setLang('es')"><span>🇪🇸</span> ESPAÑOL</div>
+        <div class="lang-option" onclick="setLang('it')"><span>🇮🇹</span> ITALIANO</div>
+        <div class="lang-option" onclick="setLang('tr')"><span>🇹🇷</span> TÜRKÇE</div>
+        <div class="lang-option" onclick="setLang('ar')" id="syria-option"> العربية</div>
     </div>
 </div>
 
 <div class="wrapper">
-    <div class="brand-logo">DAHERINK</div>
-    <p class="tagline" id="t-tagline">Premium Streetwear & Development</p>
+    <img src="logo1.png" alt="DAHERINK" class="brand-logo" onerror="this.src='logo.png'">
+    
+    <p class="tagline-small" id="t-tagline-small">PREMIUM STREETWEAR & DEVELOPMENT</p>
+    <p class="tagline-luxury" id="t-tagline-luxury">CRAFTED IN SILENCE. WORN WITH IDENTITY.</p>
 
     <div class="links-container">
-        <a href="https://www.shopify.com" target="_blank" class="btn">
-            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                <path d="M388.3 104.1a4.66 4.66 0 0 0-4.4-3.11h-31.5a5.53 5.53 0 0 0-5.18 4.11L308.2 217.43l-34.92-126.7a10.87 10.87 0 0 0-10.4-8.06H107.05a10.39 10.39 0 0 0-10.15 8L56 233.15 22.06 105.11a4.63 4.63 0 0 0-4.4-3.47H2.33a2.31 2.31 0 0 0-2.31 2.3c-.05 10.4.75 21 2.4 31.79L39.87 363.3a21.46 21.46 0 0 0 21.05 16.59h33.81a21.57 21.57 0 0 0 21.24-17.51l26-146.54 34.82 146.85a21.36 21.36 0 0 0 21.11 16.3h35.85a21.42 21.42 0 0 0 21.13-17.15l47.16-246.52 30.34 103.56a12.8 12.8 0 0 0 12.35 9.2h36a4.34 4.34 0 0 0 4.2-5l-13.68-71.18c-1.37-7.2-2.9-14.28-4.63-21.2zM356 416H45a22 22 0 0 1-21.4-16.7L1.6 288.5C3.3 299.4 5.3 310.2 7.7 321l29 135.5A43.5 43.5 0 0 0 79 488h331.6c4.6-25 7.8-50.5 9.6-76.3l-18-6.5a21.8 21.8 0 0 1-14.2-18.7L375 304v-1.6l-8.5-30-10.5 143.6z"/>
-            </svg>
-            <span id="t-shop-shopify">Shop on Shopify</span>
-        </a>
-        
-        <a href="https://www.etsy.com" target="_blank" class="btn">
-            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                <path d="M141.2,126.1c0-10.9-3.2-19.4-9.6-25.5c-6.4-6.1-17.6-9.2-33.6-9.2h-36v83.5h36c14.9,0,25.6-2.5,32.2-7.4 C137,162.6,141.2,154.6,141.2,126.1z M141.2,301.6c0-11.4-3.2-20-9.6-25.9c-6.4-5.9-18.4-8.8-36-8.8h-33.6v94h33.6c18.1,0,30.7-3,37.8-9.1 C139.7,321.2,141.2,312.4,141.2,301.6z M418,228.4v-40.4h-64.4c-8.9,0-15.6-2.5-20.1-7.4c-4.5-4.9-6.7-11.8-6.7-20.7v-25.6 c0-12.8,2.7-22.3,8.1-28.5c5.4-6.2,13.6-9.3,24.6-9.3h58.5v-40.4h-58.5c-27.1,0-48.4,7.8-63.9,23.3c-15.5,15.5-23.2,36-23.2,61.4 v23.2h-36v40.4h36v153.9c0,27.1,7.8,48.4,23.3,63.9c15.5,15.5,36,23.3,61.4,23.3h58.5v-40.4h-58.5c-11,0-19.2-3.1-24.6-9.3 c-5.4-6.2-8.1-15.7-8.1-28.5V228.4H418z M193.3,285.7c-7.9-16.7-22.1-28.2-42.5-34.6c14.2-6.6,24.6-16.1,31.2-28.4 c6.6-12.3,9.9-26.6,9.9-42.9v-13.6c0-23.3-8.1-42-24.3-56.1C151.4,96,128.5,89,98.9,89H25.6v334h73.3c27.1,0,48.2-6.5,63.3-19.5 c15.1-13,22.7-30.8,22.7-53.4v-23.6C184.9,310.8,187.7,297.4,193.3,285.7z"/>
-            </svg>
-            <span id="t-shop-etsy">Shop on Etsy</span>
-        </a>
+        <a href="https://www.shopify.com" target="_blank" class="btn btn-primary" id="t-shop-shopify">SHOP ON SHOPIFY</a>
+        <a href="https://www.etsy.com" target="_blank" class="btn btn-secondary" id="t-shop-etsy">SHOP ON ETSY</a>
     </div>
 
-    <a href="#" class="verify-trigger" id="btn-verify">Verify Authenticity</a>
+    <a href="#" class="verify-trigger" id="btn-verify">VERIFY AUTHENTICITY</a>
     <div class="verify-message" id="msg-verify">TO VERIFY, PLEASE SCAN THE QR CODE ON YOUR GARMENT</div>
 
     <footer>© 2026 DAHERINK. ALL RIGHTS RESERVED.</footer>
 </div>
 
 <script>
-    const syriaSvgCode = `<svg style="width: 1.2em; height: 0.9em; vertical-align: middle; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="6" fill="#000"/><rect width="9" height="4" fill="#fff"/><rect width="9" height="2" fill="#ce1126"/><g fill="#007a3d"><polygon points="3,2.4 3.3,3.3 2.5,2.7 3.5,2.7 2.7,3.3" /><polygon points="6,2.4 6.3,3.3 5.5,2.7 6.5,2.7 5.7,3.3" /></g></svg>`;
+    /* العلم السوري المصحح (أخضر أعلى، أبيض وسط مع 3 نجوم حمراء، أسود أسفل) */
+    const syriaSvg = `<svg style="width: 1.2em; height: 0.9em; vertical-align: middle; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="6" fill="#000"/><rect width="9" height="4" fill="#fff"/><rect width="9" height="2" fill="#007a3d"/><g fill="#ce1126"><polygon points="2.25,2.4 2.55,3.3 1.75,2.7 2.75,2.7 1.95,3.3"/><polygon points="4.5,2.4 4.8,3.3 4,2.7 5,2.7 4.2,3.3"/><polygon points="6.75,2.4 7.05,3.3 6.25,2.7 7.25,2.7 6.45,3.3"/></g></svg>`;
 
     const dict = {
         'de': {
-            'lang-label': 'Sprache', 'flag': '🇩🇪',
-            'tagline': 'PREMIUM STREETWEAR & ENTWICKLUNG',
+            'lang-label': 'SPRACHE', 'flag': '🇩🇪',
+            'tagline-small': 'PREMIUM STREETWEAR & ENTWICKLUNG',
+            'tagline-luxury': 'IN STILLE GEFERTIGT. MIT IDENTITÄT GETRAGEN.',
             'shop-shopify': 'AUF SHOPIFY KAUFEN',
             'shop-etsy': 'AUF ETSY KAUFEN',
             'verify-btn': 'ECHTHEIT PRÜFEN',
             'scan-msg': 'ZUR PRÜFUNG BITTE DEN QR-CODE AUF DEM KLEIDUNGSSTÜCK SCANNEN'
         },
         'en': {
-            'lang-label': 'Language', 'flag': '🇺🇸',
-            'tagline': 'Premium Streetwear & Development',
-            'shop-shopify': 'Shop on Shopify',
-            'shop-etsy': 'Shop on Etsy',
-            'verify-btn': 'Verify Authenticity',
+            'lang-label': 'LANGUAGE', 'flag': '🇺🇸',
+            'tagline-small': 'PREMIUM STREETWEAR & DEVELOPMENT',
+            'tagline-luxury': 'CRAFTED IN SILENCE. WORN WITH IDENTITY.',
+            'shop-shopify': 'SHOP ON SHOPIFY',
+            'shop-etsy': 'SHOP ON ETSY',
+            'verify-btn': 'VERIFY AUTHENTICITY',
             'scan-msg': 'TO VERIFY, PLEASE SCAN THE QR CODE ON YOUR GARMENT'
         },
         'fr': {
-            'lang-label': 'Langue', 'flag': '🇫🇷',
-            'tagline': 'STREETWEAR PREMIUM & DÉVELOPPEMENT',
+            'lang-label': 'LANGUE', 'flag': '🇫🇷',
+            'tagline-small': 'STREETWEAR PREMIUM & DÉVELOPPEMENT',
+            'tagline-luxury': 'FAÇONNÉ EN SILENCE. PORTÉ AVEC IDENTITÉ.',
             'shop-shopify': 'ACHETER SUR SHOPIFY',
             'shop-etsy': 'ACHETER SUR ETSY',
             'verify-btn': 'VÉRIFIER L\'AUTHENTICITÉ',
             'scan-msg': 'POUR VÉRIFIER, VEUILLEZ SCANNER LE QR CODE SUR VOTRE VÊTEMENT'
         },
         'es': {
-            'lang-label': 'Idioma', 'flag': '🇪🇸',
-            'tagline': 'STREETWEAR PREMIUM & DESARROLLO',
+            'lang-label': 'IDIOMA', 'flag': '🇪🇸',
+            'tagline-small': 'STREETWEAR PREMIUM Y DESARROLLO',
+            'tagline-luxury': 'CREADO EN SILENCIO. VESTIDO CON IDENTIDAD.',
             'shop-shopify': 'COMPRAR EN SHOPIFY',
             'shop-etsy': 'COMPRAR EN ETSY',
             'verify-btn': 'VERIFICAR AUTENTICIDAD',
             'scan-msg': 'PARA VERIFICAR, ESCANEE EL CÓDIGO QR EN SU PRENDA'
         },
         'it': {
-            'lang-label': 'Lingua', 'flag': '🇮🇹',
-            'tagline': 'STREETWEAR PREMIUM & SVILUPPO',
+            'lang-label': 'LINGUA', 'flag': '🇮🇹',
+            'tagline-small': 'STREETWEAR PREMIUM E SVILUPPO',
+            'tagline-luxury': 'CREATO NEL SILENZIO. INDOSSATO CON IDENTITÀ.',
             'shop-shopify': 'ACQUISTA SU SHOPIFY',
             'shop-etsy': 'ACQUISTA SU ETSY',
             'verify-btn': 'VERIFICA AUTENTICITÀ',
             'scan-msg': 'PER VERIFICARE, SCANSIONA IL CODICE QR SUL TUO CAPO'
         },
         'tr': {
-            'lang-label': 'Dil', 'flag': '🇹🇷',
-            'tagline': 'PREMİUM STREETWEAR & GELİŞTİRME',
+            'lang-label': 'DİL', 'flag': '🇹🇷',
+            'tagline-small': 'PREMİUM STREETWEAR & GELİŞTİRME',
+            'tagline-luxury': 'SESSİZLİKTE ÜRETİLDİ. KİMLİKLE GİYİLDİ.',
             'shop-shopify': 'SHOPIFY\'DA ALIŞVERİŞ YAP',
             'shop-etsy': 'ETSY\'DE ALIŞVERİŞ YAP',
             'verify-btn': 'ORİJİNALLİĞİ DOĞRULA',
             'scan-msg': 'DOĞRULAMAK İÇİN LÜTFEN KIYAFETİNİZDEKİ QR KODU OKUTUN'
         },
         'ar': {
-            'lang-label': 'اللغة', 'flag': syriaSvgCode,
-            'tagline': 'ملابس الشارع الفاخرة والتطوير',
+            'lang-label': 'اللغة', 'flag': syriaSvg,
+            'tagline-small': 'ملابس الشارع الفاخرة والتطوير',
+            'tagline-luxury': 'صُنعت في صمت. وتُرتدى بهوية.',
             'shop-shopify': 'تسوق على شوبيفاي',
             'shop-etsy': 'تسوق على إتسي',
             'verify-btn': 'التحقق من الأصالة',
@@ -300,7 +240,10 @@
         }
     };
 
-    let currentLang = 'de';
+    let currentLang = 'en';
+
+    // حقن العلم السوري في قائمة اللغات
+    document.getElementById('syria-option').insertAdjacentHTML('afterbegin', '<span style="display:inline-flex; align-items:center;">' + syriaSvg + '</span>&nbsp;&nbsp;');
 
     function initLanguage() {
         const savedLang = localStorage.getItem('daherink_lang');
@@ -338,7 +281,8 @@
         document.getElementById('t-lang-label').innerText = dict[currentLang]['lang-label'];
         document.getElementById('current-flag').innerHTML = dict[currentLang]['flag'];
         
-        document.getElementById('t-tagline').innerText = dict[currentLang]['tagline'];
+        document.getElementById('t-tagline-small').innerText = dict[currentLang]['tagline-small'];
+        document.getElementById('t-tagline-luxury').innerText = dict[currentLang]['tagline-luxury'];
         document.getElementById('t-shop-shopify').innerText = dict[currentLang]['shop-shopify'];
         document.getElementById('t-shop-etsy').innerText = dict[currentLang]['shop-etsy'];
         
