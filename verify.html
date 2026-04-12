@@ -21,10 +21,10 @@
             color: var(--text-light);
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
-            background-color: #5A4A6A; /* لون احتياطي */
+            background-color: #5A4A6A; /* لون احتياطي يظهر فقط إذا كان الإنترنت ضعيفاً جداً */
         }
 
-        /* خلفية الفيديو */
+        /* فيديو الخلفية المحدث */
         #bg-video {
             position: fixed;
             top: 0;
@@ -32,7 +32,7 @@
             width: 100vw;
             height: 100vh;
             object-fit: cover;
-            z-index: -1;
+            z-index: 0; /* تم التعديل من -1 إلى 0 لضمان ظهوره فوق الخلفية الملونة */
         }
 
         /* حاوية الزجاج المغشى */
@@ -50,6 +50,7 @@
         /* الشعار */
         .logo-container {
             margin-bottom: 20px;
+            position: relative; z-index: 10;
         }
         .brand-logo {
             width: 120px;
@@ -107,11 +108,10 @@
 </head>
 <body>
 
-        <video autoplay muted loop playsinline preload="auto" id="bg-video">
-        <source src="./bg.mp4" type="video/mp4">
-        </video>
+    <video autoplay muted loop playsinline webkit-playsinline preload="auto" id="bg-video">
+        <source src="bg.mp4" type="video/mp4">
+    </video>
     
-
     <button class="lang-toggle" onclick="toggleLanguage()">EN / DE</button>
 
     <div class="glass-container">
@@ -252,7 +252,6 @@
             if (!currentItem.target_url || currentItem.status === 'unassigned') {
                 openEditMode(); 
             } else {
-                // الانتظار المبرمج بدقة على 2000 مللي ثانية (ثانيتين)
                 countdownTimer = setTimeout(() => {
                     window.location.href = currentItem.target_url;
                 }, 2000);
