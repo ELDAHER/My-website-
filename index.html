@@ -12,34 +12,42 @@
             padding: 0; 
         }
 
-        body { 
-            /* Background Configuration */
-            background-image: url('Picsart_26-04-06_16-41-04-669.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            
-            /* Typography and Colors */
-            color: #ffffff; 
+        body, html { 
+            width: 100%;
+            height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #ffffff; 
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
+            overflow: hidden; /* لمنع ظهور أي أشرطة تمرير بسبب الفيديو */
+            background-color: #1A1A1A; /* لون احتياطي */
+        }
+
+        /* فيديو الخلفية المائي مع الصورة الاحتياطية */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 0;
         }
 
         /* Glassmorphism Container */
         .wrapper {
-            width: 100%;
+            position: relative;
+            z-index: 10;
+            width: 90%;
             max-width: 420px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.65); 
+            background: rgba(20, 20, 25, 0.4); /* شفافية أعلى لإبراز التموج المائي */
             padding: 45px 25px;
-            border-radius: 4px; /* Sharp edges for premium streetwear aesthetic */
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            backdrop-filter: blur(15px); /* تضباب قوي لجمالية الزجاج */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
@@ -50,14 +58,16 @@
             letter-spacing: 8px;
             margin-bottom: 10px;
             text-transform: uppercase;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5); /* ظل لضمان القراءة فوق الفيديو */
         }
 
         .tagline {
             font-size: 0.7rem;
-            color: #999;
+            color: #CCC;
             margin-bottom: 50px;
             letter-spacing: 3px;
             text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         /* Action Buttons */
@@ -104,13 +114,17 @@
         footer {
             margin-top: 50px;
             font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 2px;
             text-transform: uppercase;
         }
     </style>
 </head>
 <body>
+
+<video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="poster.png" id="bg-video">
+    <source src="hero.mp4" type="video/mp4">
+</video>
 
 <div class="wrapper">
     <div class="brand-logo">DAHERINK</div>
@@ -119,11 +133,27 @@
     <div class="links-container">
         <a href="https://www.shopify.com" target="_blank" class="btn">Shop on Shopify</a>
         <a href="https://www.etsy.com" target="_blank" class="btn">Shop on Etsy</a>
-        <a href="verify.html" class="btn btn-outline">Verify Authenticity</a>
+        <a href="verify.html" class="btn btn-outline" id="btn-verify">Verify Authenticity</a>
     </div>
 
     <footer>© 2026 DAHERINK. ALL RIGHTS RESERVED.</footer>
 </div>
+
+<script>
+    document.getElementById('btn-verify').addEventListener('click', function(event) {
+        event.preventDefault(); // منع الانتقال الفوري للصفحة
+        const btn = this;
+        
+        // تحويل النص لمنع الارتباك أثناء الانتظار
+        btn.innerText = 'LOADING...';
+        btn.style.pointerEvents = 'none'; // تعطيل الزر لمنع الضغط المزدوج
+        
+        // تأخير الانتقال لمدة 3500 مللي ثانية
+        setTimeout(() => {
+            window.location.href = btn.href;
+        }, 3500);
+    });
+</script>
 
 </body>
 </html>
