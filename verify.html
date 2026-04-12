@@ -11,7 +11,7 @@
             --olive-green: #4A533E;
             --danger-red: #D9534F;
             --text-light: #F0F0F0;
-            --glass-bg: rgba(20, 20, 25, 0.35); /* تم تخفيف الشفافية ليتنفس نبض الفيديو بوضوح */
+            --glass-panel-bg: rgba(20, 20, 25, 0.65); /* خلفية داكنة للجزر الزجاجية فقط */
             --glass-border: rgba(255, 255, 255, 0.15);
         }
 
@@ -32,26 +32,29 @@
             object-fit: cover; z-index: 0;
         }
 
-        .glass-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px); /* زيادة التضباب لتعويض تخفيف اللون */
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 30px; width: 90%; max-width: 400px;
-            text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        /* الحاوية الرئيسية شفافة تماماً */
+        .glass-wrapper {
+            width: 90%; max-width: 400px;
+            text-align: center;
             position: relative; z-index: 10;
         }
 
-        /* إضافة ظلال للنصوص لضمان القراءة بوضوح مع الخلفية المفتوحة */
-        .glass-container h1, .glass-container p, .glass-container label {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        /* الجزر الزجاجية المستقلة */
+        .glass-panel {
+            background: var(--glass-panel-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5)); margin-bottom: 20px; }
+        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5)); display: block; margin: 0 auto; }
 
-        h1 { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; }
-        p.subtitle { font-size: 10px; color: #DDD; letter-spacing: 2px; margin-bottom: 20px; }
+        h1 { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        p.subtitle { font-size: 10px; color: #DDD; letter-spacing: 2px; margin-bottom: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
 
         input {
             width: 100%; padding: 12px; margin-bottom: 15px;
@@ -60,6 +63,7 @@
             font-family: inherit; font-size: 12px; outline: none;
         }
         input:focus { border-color: var(--olive-green); }
+        input:last-child { margin-bottom: 0; }
 
         button {
             width: 100%; padding: 14px; background: var(--text-light); color: var(--charcoal);
@@ -67,11 +71,12 @@
             text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
             font-size: 11px; margin-bottom: 10px;
         }
+        button:last-child { margin-bottom: 0; }
         
         button.owner-btn { background: var(--olive-green); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(74, 83, 62, 0.5); }
         button.owner-btn:hover { background: #5d684e; }
         button.secondary { background: transparent; color: var(--text-light); border: 1px solid var(--glass-border); }
-        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 9px; padding: 8px; margin-top: 15px; }
+        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 9px; padding: 10px; margin-top: 5px; }
 
         /* القائمة المنسدلة للغات */
         .lang-dropdown {
@@ -157,36 +162,47 @@
         </div>
     </div>
 
-    <div class="glass-container">
-        <div class="logo-container">
+    <div class="glass-wrapper">
+        
+        <div class="glass-panel" style="padding: 15px;">
             <img src="logo.png" alt="DAHERINK" class="brand-logo" onerror="this.style.display='none'">
         </div>
 
         <div id="screen-splash" class="screen active">
-            <div class="loader" id="loader-icon"></div>
-            <h1 id="t-splash-title">AUTHENTICATING</h1>
-            <p class="subtitle" id="t-splash-sub">Verifying blockchain registry...</p>
+            <div class="glass-panel">
+                <div class="loader" id="loader-icon"></div>
+                <h1 id="t-splash-title">AUTHENTICATING</h1>
+                <p class="subtitle" id="t-splash-sub">Verifying blockchain registry...</p>
+            </div>
             
-            <div id="splash-action" style="display: none; margin-top: 20px;">
-                <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
-                <p style="font-size: 11px; text-transform: none; margin-bottom: 25px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
-                
-                <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
-                <button class="report-btn" onclick="openReportSheet()" id="t-report-btn">REPORT MALICIOUS LINK</button>
+            <div id="splash-action" style="display: none;">
+                <div class="glass-panel">
+                    <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
+                    <p style="font-size: 11px; text-transform: none; margin-bottom: 20px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
+                    <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
+                    <button class="report-btn" onclick="openReportSheet()" id="t-report-btn">REPORT MALICIOUS LINK</button>
+                </div>
             </div>
         </div>
 
         <div id="screen-manage" class="screen">
-            <h1 id="t-manage-title">CONFIGURATION</h1>
-            <p class="subtitle" id="t-manage-sub">Update your digital identity</p>
+            <div class="glass-panel">
+                <h1 id="t-manage-title">CONFIGURATION</h1>
+                <p class="subtitle" id="t-manage-sub">Update your digital identity</p>
+            </div>
             
-            <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
-            <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
-            <input type="text" id="input-url" placeholder="ENTER NEW LINK" required>
+            <div class="glass-panel">
+                <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
+                <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
+                <input type="text" id="input-url" placeholder="ENTER NEW LINK" required>
+            </div>
             
-            <button onclick="saveConfiguration()" id="t-save-btn">SAVE SECURELY</button>
-            <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
+            <div class="glass-panel">
+                <button onclick="saveConfiguration()" id="t-save-btn">SAVE SECURELY</button>
+                <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
+            </div>
         </div>
+
     </div>
 
     <div class="bottom-sheet" id="whitelist-sheet">
@@ -215,7 +231,6 @@
         let currentItem = null;
         let countdownTimer;
 
-        // كود العلم السوري كمتغير لسهولة حقنه
         const syriaSvgCode = `<svg style="width: 1.2em; height: 0.9em; vertical-align: middle; border-radius: 2px;" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg"><rect width="9" height="6" fill="#000"/><rect width="9" height="4" fill="#fff"/><rect width="9" height="2" fill="#ce1126"/><g fill="#007a3d"><polygon points="3,2.4 3.3,3.3 2.5,2.7 3.5,2.7 2.7,3.3" /><polygon points="6,2.4 6.3,3.3 5.5,2.7 6.5,2.7 5.7,3.3" /></g></svg>`;
 
         const allowedDomains = [
@@ -355,7 +370,7 @@
             else document.body.classList.remove('rtl');
 
             document.getElementById('t-lang-label').innerText = dict[currentLang]['lang-label'];
-            document.getElementById('current-flag').innerHTML = dict[currentLang]['flag']; // innerHTML لدعم SVG
+            document.getElementById('current-flag').innerHTML = dict[currentLang]['flag']; 
             
             document.getElementById('t-splash-title').innerText = dict[currentLang]['splash-title'];
             document.getElementById('t-splash-sub').innerText = dict[currentLang]['splash-sub'];
