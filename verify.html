@@ -11,7 +11,7 @@
             --olive-green: #4A533E;
             --danger-red: #D9534F;
             --text-light: #F0F0F0;
-            --glass-bg: rgba(20, 20, 25, 0.7); /* خلفية زجاجية داكنة لإبراز الشعار الأبيض والنصوص */
+            --glass-bg: rgba(20, 20, 25, 0.7);
             --glass-border: rgba(255, 255, 255, 0.15);
         }
 
@@ -21,21 +21,17 @@
             color: var(--text-light);
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
-            background-color: #5A4A6A; /* لون احتياطي يظهر فقط إذا كان الإنترنت ضعيفاً جداً */
+            background-color: #5A4A6A;
         }
 
-        /* فيديو الخلفية المحدث */
+        /* دعم اتجاه اللغة العربية */
+        body.rtl { direction: rtl; font-family: 'Arial', sans-serif; }
+
         #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: 0; /* تم التعديل من -1 إلى 0 لضمان ظهوره فوق الخلفية الملونة */
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; z-index: 0;
         }
 
-        /* حاوية الزجاج المغشى */
         .glass-container {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -47,16 +43,7 @@
             position: relative; z-index: 10;
         }
 
-        /* الشعار */
-        .logo-container {
-            margin-bottom: 20px;
-            position: relative; z-index: 10;
-        }
-        .brand-logo {
-            width: 120px;
-            height: auto;
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4)); /* إبراز الشعار الأبيض */
-        }
+        .brand-logo { width: 120px; height: auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4)); margin-bottom: 20px; }
 
         h1 { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px; }
         p.subtitle { font-size: 10px; color: #DDD; letter-spacing: 2px; margin-bottom: 20px; }
@@ -73,21 +60,44 @@
             width: 100%; padding: 14px; background: var(--text-light); color: var(--charcoal);
             border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
             text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
-            font-size: 12px; margin-bottom: 10px;
+            font-size: 11px; margin-bottom: 10px;
         }
-        button:hover { opacity: 0.9; }
         
         button.owner-btn { background: var(--olive-green); color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(74, 83, 62, 0.5); }
         button.owner-btn:hover { background: #5d684e; }
         button.secondary { background: transparent; color: var(--text-light); border: 1px solid var(--glass-border); }
-        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 10px; padding: 8px; margin-top: 15px; }
-        button.report-btn:hover { background: rgba(217, 83, 79, 0.1); }
+        button.report-btn { background: transparent; color: var(--danger-red); border: 1px solid var(--danger-red); font-size: 9px; padding: 8px; margin-top: 15px; }
+
+        /* القائمة المنسدلة للغات */
+        .lang-dropdown {
+            position: absolute; top: 20px; right: 20px; z-index: 20;
+            text-align: left;
+        }
+        body.rtl .lang-dropdown { right: auto; left: 20px; text-align: right; }
 
         .lang-toggle {
-            position: absolute; top: 20px; right: 20px; z-index: 20;
-            background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
-            color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 10px;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border);
+            color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; 
+            font-size: 10px; display: flex; align-items: center; gap: 8px;
+            backdrop-filter: blur(5px);
         }
+        .lang-toggle:hover { background: rgba(0,0,0,0.8); }
+        
+        .lang-menu {
+            display: none; position: absolute; top: 100%; right: 0; margin-top: 5px;
+            background: rgba(20, 20, 25, 0.9); border: 1px solid var(--glass-border);
+            border-radius: 6px; overflow: hidden; width: max-content;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        body.rtl .lang-menu { right: auto; left: 0; }
+        .lang-menu.show { display: block; }
+        
+        .lang-option {
+            padding: 10px 15px; font-size: 11px; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; color: #DDD;
+            transition: 0.2s;
+        }
+        .lang-option:hover { background: rgba(255,255,255,0.1); color: white; }
 
         .bottom-sheet {
             position: fixed; bottom: -100%; left: 0; width: 100%;
@@ -112,10 +122,23 @@
         <source src="bg.mp4" type="video/mp4">
     </video>
     
-    <button class="lang-toggle" onclick="toggleLanguage()">EN / DE</button>
+    <div class="lang-dropdown">
+        <div class="lang-toggle" onclick="toggleLangMenu()">
+            <span id="t-lang-label">Language</span>
+            <span id="current-flag">🇺🇸</span>
+            <span style="font-size: 8px;">▼</span>
+        </div>
+        <div class="lang-menu" id="lang-menu">
+            <div class="lang-option" onclick="setLang('ar')"><span>🇸🇾</span> العربية</div>
+            <div class="lang-option" onclick="setLang('de')"><span>🇩🇪</span> Deutsch</div>
+            <div class="lang-option" onclick="setLang('en')"><span>🇺🇸</span> English</div>
+            <div class="lang-option" onclick="setLang('fr')"><span>🇫🇷</span> Français</div>
+            <div class="lang-option" onclick="setLang('it')"><span>🇮🇹</span> Italiano</div>
+            <div class="lang-option" onclick="setLang('es')"><span>🇪🇸</span> Español</div>
+        </div>
+    </div>
 
     <div class="glass-container">
-        
         <div class="logo-container">
             <img src="logo.png" alt="DAHERINK" class="brand-logo" onerror="this.style.display='none'">
         </div>
@@ -127,7 +150,7 @@
             
             <div id="splash-action" style="display: none; margin-top: 20px;">
                 <p style="font-size: 13px; color: #85B079; font-weight: bold; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);" id="t-authentic">✅ AUTHENTIC GARMENT</p>
-                <p style="font-size: 11px; text-transform: none; margin-bottom: 25px; color: #BBB;" id="t-redirecting">Redirecting in 2s...</p>
+                <p style="font-size: 11px; text-transform: none; margin-bottom: 25px; color: #BBB;" id="t-redirecting">Redirecting in 3.5s...</p>
                 
                 <button class="owner-btn" onclick="openEditMode()" id="t-manage-btn">OWNER? MANAGE LINK</button>
                 <button class="report-btn" onclick="openReportSheet()" id="t-report-btn">REPORT MALICIOUS LINK</button>
@@ -140,29 +163,28 @@
             
             <input type="password" id="input-pin" placeholder="ENTER CARE-LABEL PIN" required>
             <input type="email" id="input-email" placeholder="ENTER EMAIL (FOR RECOVERY)" style="display: none;">
-            <input type="text" id="input-url" placeholder="ENTER NEW LINK (E.G. TIKTOK.COM/@...)" required>
+            <input type="text" id="input-url" placeholder="ENTER NEW LINK" required>
             
             <button onclick="saveConfiguration()" id="t-save-btn">SAVE SECURELY</button>
             <button class="secondary" onclick="window.location.href='https://daherink.com'" id="t-shop-btn">VISIT DAHERINK SHOP</button>
         </div>
-
     </div>
 
     <div class="bottom-sheet" id="whitelist-sheet">
         <div class="sheet-title" id="t-error-title">SECURITY BLOCK</div>
         <div class="sheet-text" id="t-error-text">
-            For safety, only trusted platforms are permitted (Social Media, Streaming, Portfolios). Custom domains require admin approval.
+            Only trusted platforms are permitted.
         </div>
-        <button onclick="closeSheet('whitelist-sheet')">UNDERSTOOD</button>
+        <button onclick="closeSheet('whitelist-sheet')" id="t-understood-btn">UNDERSTOOD</button>
     </div>
 
     <div class="bottom-sheet" id="report-sheet">
-        <div class="sheet-title" style="color: white;">REPORT LINK</div>
+        <div class="sheet-title" style="color: white;" id="t-report-sheet-title">REPORT LINK</div>
         <div class="sheet-text" id="t-report-text">
-            If this garment links to illegal or malicious content, please report it. Our team will review and disable it within 24 hours.
+            If this garment links to malicious content, please report it.
         </div>
         <button class="owner-btn" onclick="submitReport()" id="t-submit-report">SUBMIT REPORT</button>
-        <button class="secondary" onclick="closeSheet('report-sheet')">CANCEL</button>
+        <button class="secondary" onclick="closeSheet('report-sheet')" id="t-cancel-btn">CANCEL</button>
     </div>
 
     <script>
@@ -174,7 +196,6 @@
         let currentItem = null;
         let countdownTimer;
 
-        // القائمة البيضاء الدقيقة
         const allowedDomains = [
             'instagram.com', 'tiktok.com', 'tiktok.me', 'facebook.com', 'fb.com', 'twitter.com', 'x.com', 'threads.net', 'snapchat.com', 'bereal.com', 'linkedin.com', 'mastodon.social', 'mastodon.world', 'reddit.com', 'pinterest.com', 'vk.com', 'weibo.com', 'douyin.com', 'kuaishou.com', 'tumblr.com', 'flickr.com',
             'youtube.com', 'youtu.be', 'vimeo.com', 'dailymotion.com', 'twitch.tv', 'kick.com', 'rumble.com', 'odysee.com', 'bilibili.com', 'vevo.com',
@@ -189,31 +210,119 @@
             'steamcommunity.com', 'store.steampowered.com', 'epicgames.com', 'riotgames.com', 'battle.net', 'roblox.com', 'minecraft.net', 'daherink.com'
         ];
 
-        let currentLang = navigator.language.startsWith('de') ? 'de' : 'en';
         const dict = {
             'en': {
+                'lang-label': 'Language', 'flag': '🇺🇸',
                 'splash-title': 'AUTHENTICATING', 'splash-sub': 'Verifying blockchain registry...',
-                'authentic': '✅ AUTHENTIC GARMENT', 'redirecting': 'Redirecting in 2s...',
+                'authentic': '✅ AUTHENTIC GARMENT', 'redirecting': 'Redirecting in 3.5s...',
                 'manage-btn': 'OWNER? MANAGE LINK', 'report-btn': 'REPORT MALICIOUS LINK',
                 'manage-title': 'CONFIGURATION', 'manage-sub': 'Update your digital identity',
                 'placeholder-pin': 'ENTER CARE-LABEL PIN', 'placeholder-url': 'ENTER NEW LINK',
-                'save-btn': 'SAVE SECURELY', 'error-title': 'SECURITY BLOCK',
-                'report-text': 'If this garment links to illegal or malicious content, please report it. Our team will review and disable it within 24 hours.',
-                'submit-report': 'SUBMIT REPORT', 'invalid-pin': 'INVALID PIN.'
+                'save-btn': 'SAVE SECURELY', 'shop-btn': 'VISIT DAHERINK SHOP',
+                'error-title': 'SECURITY BLOCK', 'error-text': 'Only trusted platforms are permitted.', 'understood-btn': 'UNDERSTOOD',
+                'report-sheet-title': 'REPORT LINK', 'report-text': 'If this garment links to illegal or malicious content, please report it.', 'submit-report': 'SUBMIT REPORT', 'cancel-btn': 'CANCEL',
+                'invalid-pin': 'INVALID PIN.'
             },
             'de': {
+                'lang-label': 'Sprache', 'flag': '🇩🇪',
                 'splash-title': 'AUTHENTIFIZIERUNG', 'splash-sub': 'Blockchain-Register wird geprüft...',
-                'authentic': '✅ ECHTES KLEIDUNGSSTÜCK', 'redirecting': 'Weiterleitung in 2s...',
+                'authentic': '✅ ECHTES KLEIDUNGSSTÜCK', 'redirecting': 'Weiterleitung in 3.5s...',
                 'manage-btn': 'BESITZER? LINK VERWALTEN', 'report-btn': 'SCHÄDLICHEN LINK MELDEN',
                 'manage-title': 'KONFIGURATION', 'manage-sub': 'Digitale Identität aktualisieren',
                 'placeholder-pin': 'PFLEGEETIKETT-PIN EINGEBEN', 'placeholder-url': 'NEUEN LINK EINGEBEN',
-                'save-btn': 'SICHER SPEICHERN', 'error-title': 'SICHERHEITSBLOCKADE',
-                'report-text': 'Wenn dieses Kleidungsstück auf illegale oder schädliche Inhalte verlinkt, melde es bitte. Wir prüfen und deaktivieren es innerhalb von 24 Stunden.',
-                'submit-report': 'MELDUNG ABSENDEN', 'invalid-pin': 'FALSCHE PIN.'
+                'save-btn': 'SICHER SPEICHERN', 'shop-btn': 'DAHERINK SHOP BESUCHEN',
+                'error-title': 'SICHERHEITSBLOCKADE', 'error-text': 'Nur vertrauenswürdige Plattformen erlaubt.', 'understood-btn': 'VERSTANDEN',
+                'report-sheet-title': 'LINK MELDEN', 'report-text': 'Wenn dieses Kleidungsstück auf illegale Inhalte verlinkt, melde es bitte.', 'submit-report': 'MELDUNG ABSENDEN', 'cancel-btn': 'ABBRECHEN',
+                'invalid-pin': 'FALSCHE PIN.'
+            },
+            'ar': {
+                'lang-label': 'اللغة', 'flag': '🇸🇾',
+                'splash-title': 'جاري التحقق', 'splash-sub': 'يتم فحص سجل البلوكشين...',
+                'authentic': '✅ منتج أصلي وموثق', 'redirecting': 'سيتم تحويلك خلال 3.5 ثوانٍ...',
+                'manage-btn': 'هل أنت المالك؟ تعديل الرابط', 'report-btn': 'تبليغ عن رابط مخالف',
+                'manage-title': 'إعدادات القطعة', 'manage-sub': 'تحديث هويتك الرقمية',
+                'placeholder-pin': 'أدخل رمز الأمان (PIN)', 'placeholder-url': 'أدخل الرابط الجديد',
+                'save-btn': 'حفظ التعديلات آمنة', 'shop-btn': 'زيارة متجر DAHERINK',
+                'error-title': 'حظر أمني', 'error-text': 'الرابط غير مدعوم. مسموح فقط بالمنصات الموثوقة.', 'understood-btn': 'مفهوم',
+                'report-sheet-title': 'تبليغ عن رابط', 'report-text': 'إذا كان هذا المنتج يوجه لمحتوى مخالف، يرجى التبليغ عنه.', 'submit-report': 'إرسال التبليغ', 'cancel-btn': 'إلغاء',
+                'invalid-pin': 'رمز الأمان غير صحيح.'
+            },
+            'fr': {
+                'lang-label': 'Langue', 'flag': '🇫🇷',
+                'splash-title': 'AUTHENTIFICATION', 'splash-sub': 'Vérification du registre blockchain...',
+                'authentic': '✅ VÊTEMENT AUTHENTIQUE', 'redirecting': 'Redirection dans 3.5s...',
+                'manage-btn': 'PROPRIÉTAIRE ? GÉRER LE LIEN', 'report-btn': 'SIGNALER UN LIEN MALVEILLANT',
+                'manage-title': 'CONFIGURATION', 'manage-sub': 'Mettez à jour votre identité numérique',
+                'placeholder-pin': 'ENTRER LE CODE PIN', 'placeholder-url': 'ENTRER LE NOUVEAU LIEN',
+                'save-btn': 'SAUVEGARDER', 'shop-btn': 'VISITER LA BOUTIQUE',
+                'error-title': 'BLOCAGE DE SÉCURITÉ', 'error-text': 'Seules les plateformes de confiance sont autorisées.', 'understood-btn': 'COMPRIS',
+                'report-sheet-title': 'SIGNALER LE LIEN', 'report-text': 'Si ce vêtement renvoie à un contenu malveillant, veuillez le signaler.', 'submit-report': 'SOUMETTRE', 'cancel-btn': 'ANNULER',
+                'invalid-pin': 'CODE PIN INVALIDE.'
+            },
+            'it': {
+                'lang-label': 'Lingua', 'flag': '🇮🇹',
+                'splash-title': 'AUTENTICAZIONE', 'splash-sub': 'Verifica registro blockchain...',
+                'authentic': '✅ CAPO AUTENTICO', 'redirecting': 'Reindirizzamento in 3.5s...',
+                'manage-btn': 'PROPRIETARIO? GESTISCI LINK', 'report-btn': 'SEGNALA LINK NOCIVO',
+                'manage-title': 'CONFIGURAZIONE', 'manage-sub': 'Aggiorna la tua identità digitale',
+                'placeholder-pin': 'INSERISCI PIN ETICHETTA', 'placeholder-url': 'INSERISCI NUOVO LINK',
+                'save-btn': 'SALVA IN SICUREZZA', 'shop-btn': 'VISITA LO SHOP',
+                'error-title': 'BLOCCO DI SICUREZZA', 'error-text': 'Sono consentite solo piattaforme attendibili.', 'understood-btn': 'CAPITO',
+                'report-sheet-title': 'SEGNALA LINK', 'report-text': 'Se questo capo rimanda a contenuti dannosi, segnalalo.', 'submit-report': 'INVIA SEGNALAZIONE', 'cancel-btn': 'ANNULLA',
+                'invalid-pin': 'PIN NON VALIDO.'
+            },
+            'es': {
+                'lang-label': 'Idioma', 'flag': '🇪🇸',
+                'splash-title': 'AUTENTICACIÓN', 'splash-sub': 'Verificando registro blockchain...',
+                'authentic': '✅ PRENDA AUTÉNTICA', 'redirecting': 'Redirigiendo en 3.5s...',
+                'manage-btn': '¿PROPIETARIO? GESTIONAR ENLACE', 'report-btn': 'REPORTAR ENLACE MALICIOSO',
+                'manage-title': 'CONFIGURACIÓN', 'manage-sub': 'Actualiza tu identidad digital',
+                'placeholder-pin': 'INGRESE PIN DE ETIQUETA', 'placeholder-url': 'INGRESE NUEVO ENLACE',
+                'save-btn': 'GUARDAR SEGURO', 'shop-btn': 'VISITAR TIENDA',
+                'error-title': 'BLOQUEO DE SEGURIDAD', 'error-text': 'Solo se permiten plataformas de confianza.', 'understood-btn': 'ENTENDIDO',
+                'report-sheet-title': 'REPORTAR ENLACE', 'report-text': 'Si esta prenda enlaza a contenido malicioso, repórtelo.', 'submit-report': 'ENVIAR REPORTE', 'cancel-btn': 'CANCELAR',
+                'invalid-pin': 'PIN INVÁLIDO.'
             }
         };
 
-        function updateUI() {
+        let currentLang = 'en';
+
+        function initLanguage() {
+            const savedLang = localStorage.getItem('daherink_lang');
+            if (savedLang && dict[savedLang]) {
+                currentLang = savedLang;
+            } else {
+                const browserLang = navigator.language.slice(0, 2).toLowerCase();
+                if (dict[browserLang]) { currentLang = browserLang; } 
+                else if (browserLang === 'ar') { currentLang = 'ar'; }
+            }
+            applyLanguage();
+        }
+
+        function toggleLangMenu() {
+            document.getElementById('lang-menu').classList.toggle('show');
+        }
+
+        function setLang(langCode) {
+            currentLang = langCode;
+            localStorage.setItem('daherink_lang', langCode);
+            document.getElementById('lang-menu').classList.remove('show');
+            applyLanguage();
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.lang-dropdown')) {
+                document.getElementById('lang-menu').classList.remove('show');
+            }
+        }
+
+        function applyLanguage() {
+            if (currentLang === 'ar') document.body.classList.add('rtl');
+            else document.body.classList.remove('rtl');
+
+            document.getElementById('t-lang-label').innerText = dict[currentLang]['lang-label'];
+            document.getElementById('current-flag').innerText = dict[currentLang]['flag'];
+            
             document.getElementById('t-splash-title').innerText = dict[currentLang]['splash-title'];
             document.getElementById('t-splash-sub').innerText = dict[currentLang]['splash-sub'];
             document.getElementById('t-authentic').innerText = dict[currentLang]['authentic'];
@@ -225,18 +334,18 @@
             document.getElementById('input-pin').placeholder = dict[currentLang]['placeholder-pin'];
             document.getElementById('input-url').placeholder = dict[currentLang]['placeholder-url'];
             document.getElementById('t-save-btn').innerText = dict[currentLang]['save-btn'];
+            document.getElementById('t-shop-btn').innerText = dict[currentLang]['shop-btn'];
             document.getElementById('t-error-title').innerText = dict[currentLang]['error-title'];
+            document.getElementById('t-error-text').innerText = dict[currentLang]['error-text'];
+            document.getElementById('t-understood-btn').innerText = dict[currentLang]['understood-btn'];
+            document.getElementById('t-report-sheet-title').innerText = dict[currentLang]['report-sheet-title'];
             document.getElementById('t-report-text').innerText = dict[currentLang]['report-text'];
             document.getElementById('t-submit-report').innerText = dict[currentLang]['submit-report'];
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'de' : 'en';
-            updateUI();
+            document.getElementById('t-cancel-btn').innerText = dict[currentLang]['cancel-btn'];
         }
 
         window.onload = async () => {
-            updateUI();
+            initLanguage();
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
 
@@ -254,7 +363,7 @@
             } else {
                 countdownTimer = setTimeout(() => {
                     window.location.href = currentItem.target_url;
-                }, 2000);
+                }, 3500);
             }
         };
 
@@ -318,7 +427,7 @@
         }
 
         function submitReport() {
-            alert('Report logged successfully. Our team will review this link.');
+            alert('Report submitted successfully.');
             closeSheet('report-sheet');
         }
     </script>
